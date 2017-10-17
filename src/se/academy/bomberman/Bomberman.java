@@ -34,17 +34,12 @@ public class Bomberman {
         bJ.start();
         do {
 
-<<<<<<< HEAD
-=======
             screen.refresh();
->>>>>>> d7cd3e326abc783ff5db1c706d7601b5f03875f8
 
         }while(true);
 
     }
 
-<<<<<<< HEAD
-=======
     private static void draw(MapCell[][] mapCells, Screen screen){
 
        for (int i = 0; i< COLUMNS; i++){
@@ -54,7 +49,6 @@ public class Bomberman {
        }
 
     }
->>>>>>> d7cd3e326abc783ff5db1c706d7601b5f03875f8
 
 
 }
