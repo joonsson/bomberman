@@ -23,9 +23,6 @@ public class Bomb {
 
     }
 
-    public void explode() {
-        
-    }
 
 
     public int getPosX() {

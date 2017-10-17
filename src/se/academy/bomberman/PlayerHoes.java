@@ -2,6 +2,7 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
@@ -24,6 +25,8 @@ public class PlayerHoes extends Thread {
     protected MapCell[][] map;
     protected final long DELTAT = 16;
     protected final long BOMBD = 3000;
+    protected boolean bombed;
+    protected boolean living;
 
 
 
@@ -39,6 +42,8 @@ public class PlayerHoes extends Thread {
         this.bomb = new Bomb(bombColor, bombBG);
         playerModelBomb = new TextCharacter(playerModel,playerColor, bombBG);
         this.map = map;
+        bombed = false;
+        living = true;
         init();
     }
 
@@ -67,6 +72,7 @@ public class PlayerHoes extends Thread {
             screen.setCharacter(getPosX(), getPosY(), playerModelBomb);
             map[getPosX()][getPosY()].setWalkable(false);
             bomb.setStart(System.currentTimeMillis());
+            bombed = true;
         }
 
     }
@@ -103,7 +109,35 @@ public class PlayerHoes extends Thread {
         }
         screen.setCharacter(getPosX(), getPosY(), playerModel);
     }
+    protected void explode() {
+        boolean joeHit = false;
+        boolean hoseHit = false;
+        for (int i = bomb.getPosX() -5; i < bomb.getPosX() + 5; i++) {
+            if (screen.getFrontCharacter(i, bomb.getPosY()).equals(playerModel)) hoseHit = true;
+            screen.setCharacter(i, bomb.getPosY(), new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+        }
+        for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 5; j++) {
+            if (screen.getFrontCharacter(bomb.getPosX(), j).equals(playerModel)) hoseHit = true;
+            screen.setCharacter(bomb.getPosX(), j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+        }
+        if (hoseHit) {
+            living = false;
+            Bomberman.inGame = false;
+        } else if (joeHit) {
 
+        }
+        bomb.setVisible(false);
+        bomb.setStart(System.currentTimeMillis());
+    }
+    protected void deplode() {
+        for (int i = bomb.getPosX() -5; i < bomb.getPosX() + 5; i++) {
+            screen.setCharacter(i, bomb.getPosY(), new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+        }
+        for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 5; j++) {
+            screen.setCharacter(bomb.getPosX(), j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+        }
+        bombed = false;
+    }
     // region Getters/Setters
     public int getPosX() {
         return posX;
@@ -122,5 +156,20 @@ public class PlayerHoes extends Thread {
         this.posY = posY;
     }
 
-    //endregion
+    public boolean isLiving() {
+        return living;
+    }
+
+    public void setLiving(boolean alive) {
+        this.living = alive;
+    }
+
+    public boolean isBombed() {
+        return bombed;
+    }
+
+    public void setBombed(boolean bombed) {
+        this.bombed = bombed;
+    }
+//endregion
 }

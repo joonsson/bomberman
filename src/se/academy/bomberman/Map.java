@@ -31,7 +31,7 @@ public class Map {
 
             for(int j = 0; j < getRows(); j++){
 
-                if(i > 0 && i < getColumns()-1){
+                if(i == 0 || i == getColumns()-1){
 
                     cells[0][j].setColor(new TextColor.RGB(255,0,0)); // TODO sätt en konstant färgvariabel
                     cells[0][j].setWalkable(false);
@@ -39,11 +39,18 @@ public class Map {
                     cells[getColumns()-1][j].setColor(new TextColor.RGB(255,0,0));
                     cells[getColumns()-1][j].setWalkable(false);
 
-                }else{
+                }else if (j == 0 || j == getRows() - 1){
 
                     cells[i][j].setColor(new TextColor.RGB(255,0,0));
                     cells[i][j].setWalkable(false);
 
+                }else if (i % 10 == 0 && j % 5 == 0) {
+                    for (int n = i - 3; n < i; n++) {
+                        for (int m = j - 3; m < j; m++) {
+                            cells[n][m].setColor(new TextColor.RGB(255,0,0));
+                            cells[n][m].setWalkable(false);
+                        }
+                    }
                 }
             }
         }
@@ -73,6 +80,7 @@ class MapCell{
 
     MapCell(){
         this.walkable = true;
+        destructible = false;
         this.color = new TextColor.RGB(250,250,250);
     }
 

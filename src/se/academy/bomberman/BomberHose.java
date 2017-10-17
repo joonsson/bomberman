@@ -21,8 +21,11 @@ public class BomberHose extends PlayerHoes {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
 
-            if (System.currentTimeMillis() - bomb.getStart() > BOMBD) {
-                bomb.explode();
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && bomb.isVisible()) {
+                explode();
+            }
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && !bomb.isVisible()) {
+                deplode();
             }
 
             try {
