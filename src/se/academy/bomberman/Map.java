@@ -25,6 +25,28 @@ public class Map {
                 cells[i][j] = new MapCell();
             }
         }
+        drawWalls();
+    }
+
+    private void drawWalls(){
+        MapCell [][] cells = map.getCells();
+
+        for(int i = 0; i < map.getColumns(); i++){
+            for(int j = 0; j < map.getRows(); j++){
+                if(j > 0 && j < map.getRows()-1){
+
+                    cells[i][0].setColor(new TextColor.RGB(255,0,0)); // TODO sätt en konstant färgvariabel
+                    cells[i][0].setWalkable(false);
+
+                    cells[i][map.getRows()-1].setColor(new TextColor.RGB(255,0,0));
+                    cells[i][map.getRows()-1].setWalkable(false);
+                }else{
+                    cells[i][j].setColor(new TextColor.RGB(255,0,0));
+                    cells[i][j].setWalkable(false);
+                }
+            }
+        }
+        map.setCells(cells);
     }
 
     public MapCell[][] getCells() {
@@ -39,11 +61,15 @@ public class Map {
         return columns;
     }
 
+    public void setCells(MapCell[][] cells) {
+        this.cells = cells;
+    }
 }
 
 class MapCell{
     boolean walkable;
     TextColor color;
+    boolean destructible;
 
     MapCell(){
         this.walkable = true;
