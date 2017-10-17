@@ -2,8 +2,6 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
 
-import java.awt.*;
-
 public class Map {
 
     private static Map map = new Map();
@@ -25,6 +23,30 @@ public class Map {
                 cells[i][j] = new MapCell();
             }
         }
+        drawWalls();
+    }
+
+    private void drawWalls(){
+        for(int i = 0; i < getColumns(); i++){
+
+            for(int j = 0; j < getRows(); j++){
+
+                if(i > 0 && i < getColumns()-1){
+
+                    cells[0][j].setColor(new TextColor.RGB(255,0,0)); // TODO sätt en konstant färgvariabel
+                    cells[0][j].setWalkable(false);
+
+                    cells[getColumns()-1][j].setColor(new TextColor.RGB(255,0,0));
+                    cells[getColumns()-1][j].setWalkable(false);
+
+                }else{
+
+                    cells[i][j].setColor(new TextColor.RGB(255,0,0));
+                    cells[i][j].setWalkable(false);
+
+                }
+            }
+        }
     }
 
     public MapCell[][] getCells() {
@@ -39,11 +61,15 @@ public class Map {
         return columns;
     }
 
+    public void setCells(MapCell[][] cells) {
+        this.cells = cells;
+    }
 }
 
 class MapCell{
     boolean walkable;
     TextColor color;
+    boolean destructible;
 
     MapCell(){
         this.walkable = true;
