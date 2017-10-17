@@ -2,14 +2,15 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
 
-public class BomberJoe extends PlayerHoes {
+public class BomberHose extends PlayerHoes {
 
 
-    public BomberJoe(int x, int y, char playerModel, TextColor playerColor,
+    public BomberHose(int x, int y, char playerModel, TextColor playerColor,
                      Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
         super(x, y, playerModel, playerColor, screen, bombColor, bg, bombBG, map);
     }
@@ -20,28 +21,35 @@ public class BomberJoe extends PlayerHoes {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
 
+            if (System.currentTimeMillis() - bomb.getStart() > BOMBD) {
+                bomb.explode();
+            }
+
             try {
                 key = screen.pollInput();
                 if (key != null) {
-                    if (key.isCtrlDown()) {
+                    if (key.isAltDown()) {
                         dropBomb();
                     }
-                    switch (key.getKeyType()) {
-                        case ArrowUp: {
-                            move(NORTH);
-                            break;
-                        }
-                        case ArrowDown: {
-                            move(SOUTH);
-                            break;
-                        }
-                        case ArrowRight: {
-                            move(EAST);
-                            break;
-                        }
-                        case ArrowLeft: {
-                            move(WEST);
-                            break;
+                    if (key.getKeyType() == KeyType.Character) {
+                        char keyChar = key.getCharacter();
+                        switch (keyChar) {
+                            case 'w': {
+                                move(NORTH);
+                                break;
+                            }
+                            case 's': {
+                                move(SOUTH);
+                                break;
+                            }
+                            case 'd': {
+                                move(EAST);
+                                break;
+                            }
+                            case 'a': {
+                                move(WEST);
+                                break;
+                            }
                         }
                     }
                 }
@@ -61,3 +69,4 @@ public class BomberJoe extends PlayerHoes {
         }
     }
 }
+

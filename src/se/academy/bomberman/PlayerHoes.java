@@ -9,21 +9,26 @@ import java.io.IOException;
 
 public class PlayerHoes extends Thread {
 
-    private int posX;
-    private int posY;
-    private TextCharacter playerModel;
-    private int speed;
-    private Screen screen;
-    private final int NORTH = 0;
-    private final int SOUTH = 1;
-    private final int WEST = 2;
-    private final int EAST = 3;
-    private Bomb bomb;
-    private TextCharacter playerModelBomb;
-    private TextColor bg;
+    protected int posX;
+    protected int posY;
+    protected TextCharacter playerModel;
+    protected int speed;
+    protected Screen screen;
+    protected final int NORTH = 0;
+    protected final int SOUTH = 1;
+    protected final int WEST = 2;
+    protected final int EAST = 3;
+    protected Bomb bomb;
+    protected TextCharacter playerModelBomb;
+    protected TextColor bg;
+    protected MapCell[][] map;
+    protected final long DELTAT = 16;
+    protected final long BOMBD = 3000;
 
 
-    PlayerHoes(int x, int y, char playerModel, TextColor playerColor, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG) {
+
+    PlayerHoes(int x, int y, char playerModel, TextColor playerColor, Screen screen,
+               TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
 
         this.bg = bg;
         this.posX = x;
@@ -33,6 +38,7 @@ public class PlayerHoes extends Thread {
         this.screen = screen;
         this.bomb = new Bomb(bombColor, bombBG);
         playerModelBomb = new TextCharacter(playerModel,playerColor, bombBG);
+        this.map = map;
         init();
     }
 
@@ -49,48 +55,18 @@ public class PlayerHoes extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            KeyStroke key = null;
-
-            try {
-                key = screen.pollInput();
-                if (key != null) {
-
-                    switch (key.getKeyType()) {
-                        case ArrowUp: {
-                            move(NORTH);
-                            break;
-                        }
-                        case ArrowDown: {
-                            move(SOUTH);
-                            break;
-                        }
-                        case ArrowRight: {
-                            move(EAST);
-                            break;
-                        }
-                        case ArrowLeft: {
-                            move(WEST);
-                            break;
-                        }
-                    }
-                    if (key.isCtrlDown()) {
-                        dropBomb();
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    private void dropBomb() {
+    protected void dropBomb() {
 
         if (!bomb.isVisible()) {
             bomb.setPosX(posX);
             bomb.setPosY(posY);
             bomb.setVisible(true);
-
-
+            screen.setCharacter(getPosX(), getPosY(), playerModelBomb);
+            map[getPosX()][getPosY()].setWalkable(false);
+            bomb.setStart(System.currentTimeMillis());
         }
 
     }
@@ -98,23 +74,31 @@ public class PlayerHoes extends Thread {
     protected void move(int direction) {
 
         if(bomb.isVisible()&&bomb.getPosX()==getPosX() && bomb.getPosY()==posY){
-            screen.setCharacter(getPosX(),getPosY(), bomb.model);
+            screen.setCharacter(getPosX(),getPosY(), bomb.getModel());
 
         }else {
             screen.setCharacter(getPosX(), getPosY(), new TextCharacter(' ',TextColor.ANSI.DEFAULT,bg));
         }
         switch (direction) {
             case NORTH:
-                setPosY(getPosY() - 1 * speed);
+                if (map[getPosX()][getPosY()-1].isWalkable()) {
+                    setPosY(getPosY() - speed);
+                }
                 break;
             case SOUTH:
-                setPosY(getPosY() + 1 * speed);
+                if (map[getPosX()][getPosY()+1].isWalkable()) {
+                    setPosY(getPosY() + speed);
+                }
                 break;
             case WEST:
-                setPosX(getPosX() - 1 * speed);
+                if (map[getPosX()-1][getPosY()].isWalkable()) {
+                    setPosX(getPosX() - speed);
+                }
                 break;
             case EAST:
-                setPosX(getPosX() + 1 * speed);
+                if (map[getPosX()+1][getPosY()].isWalkable()) {
+                    setPosX(getPosX() + speed);
+                }
                 break;
         }
         screen.setCharacter(getPosX(), getPosY(), playerModel);

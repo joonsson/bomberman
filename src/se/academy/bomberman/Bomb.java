@@ -9,11 +9,12 @@ public class Bomb {
     private int posX;
     private int posY;
     private boolean visible;
-    public TextCharacter model;
+    private TextCharacter model;
+    private long start;
+
 
 
     //   private Screen screen;
-
     Bomb(TextColor color, TextColor bg){
         posY=0;
         posX=0;
@@ -21,6 +22,11 @@ public class Bomb {
         model = new TextCharacter('Q', color,bg );
 
     }
+
+    public void explode() {
+        
+    }
+
 
     public int getPosX() {
         return posX;
@@ -44,5 +50,21 @@ public class Bomb {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public TextCharacter getModel() {
+        return model;
+    }
+
+    public void setModel(TextCharacter model) {
+        this.model = model;
+    }
+
+    public long getStart() {
+        return start;
+    }
+
+    public void setStart(long start) {
+        this.start = start;
     }
 }
