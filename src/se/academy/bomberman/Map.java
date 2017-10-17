@@ -1,5 +1,7 @@
 package se.academy.bomberman;
 
+import com.googlecode.lanterna.TextColor;
+
 import java.awt.*;
 
 public class Map {
@@ -10,16 +12,16 @@ public class Map {
 
     Map(){}
 
-    Map(int rows, int columns){
+    Map(int columns, int rows){
         this.rows = rows;
         this.columns = columns;
         init();
     }
 
     private void init(){
-        cells =  new MapCell[rows][columns];
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
+        cells =  new MapCell[columns][rows];
+        for(int i = 0; i < columns; i++){
+            for(int j = 0; j < rows; j++){
                 cells[i][j] = new MapCell();
             }
         }
@@ -41,11 +43,11 @@ public class Map {
 
 class MapCell{
     boolean walkable;
-    Color color;
+    TextColor color;
 
     MapCell(){
         this.walkable = true;
-        this.color = Color.gray;
+        this.color = new TextColor.RGB(250,250,250);
     }
 
     // region Getters/Setters
@@ -53,7 +55,7 @@ class MapCell{
         this.walkable = walkable;
     }
 
-    public void setColor(Color color) {
+    public void setColor(TextColor color) {
         this.color = color;
     }
 
@@ -61,7 +63,7 @@ class MapCell{
         return walkable;
     }
 
-    public Color getColor() {
+    public TextColor getColor() {
         return color;
     }
 
