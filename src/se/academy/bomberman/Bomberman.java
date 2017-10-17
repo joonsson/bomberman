@@ -13,7 +13,10 @@ public class Bomberman {
     private static final int COLUMNS = 100;
     private static final int ROWS =50;
     private static final int BJSTARTX=50;
+    private static final int BHSTARTX=20;
     private static final int BJSTARTY=25;
+    private static final int BHSTARTY=15;
+    private static final long DELTAT = 16;
 
     public static void main(String[] args) throws IOException {
         JFXPanel jfx = new JFXPanel();
@@ -25,17 +28,34 @@ public class Bomberman {
         Screen screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
         Music brinstar = new Music("src/Sounds/Brinstar.mp3");
-        brinstar.start();
+        //brinstar.start();
 
         draw(map.getCells(), screen);
         BomberJoe bJ = new BomberJoe(BJSTARTX,BJSTARTY,'J',new TextColor.RGB(25,254,21),screen,new TextColor.RGB(123,234,0)
-                ,map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(0,0,250));
+                ,map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(0,0,250),map.getCells());
+        BomberHose bH = new BomberHose(BHSTARTX,BHSTARTY,'H',new TextColor.RGB(25,254,21),screen,new TextColor.RGB(123,234,0)
+                ,map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(0,0,250),map.getCells());
 
         bJ.start();
+        try {
+            Thread.sleep(8);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        bH.start();
         do {
-
+            long delay = System.currentTimeMillis();
             screen.refresh();
-
+            delay = System.currentTimeMillis() - delay;
+            delay = DELTAT - delay;
+            if (delay < 0) {
+                delay = DELTAT;
+            }
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }while(true);
 
     }
