@@ -58,6 +58,7 @@ public class Bomberman {
             }
         }while(true);
 
+        
     }
 
     private static void draw(MapCell[][] mapCells, Screen screen){
