@@ -9,6 +9,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import java.io.IOException;
 
 public class Bomberman {
+<<<<<<< HEAD
 
     private static final int COLUMNS = 100;
     private static final int ROWS =50;
@@ -16,6 +17,8 @@ public class Bomberman {
     private static final int BJSTARTY=25;
 
 
+=======
+>>>>>>> 622932cadb7c5aa3d5bff047dcb8ce9dafd5e093
     public static void main(String[] args) throws IOException {
 
         Map map = new Map(COLUMNS, ROWS);
@@ -50,3 +53,4 @@ public class Bomberman {
 
 
 }
+>>>>>>> 1e848fd4dce699702f6fbaae6617b6f50528d54f
