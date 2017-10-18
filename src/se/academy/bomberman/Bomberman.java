@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Bomberman {
     private static final int COLUMNS = 100;
     private static final int ROWS = 50;
-    private static final int BJSTARTX = 50;
+    private static final int BJSTARTX = 30;
     private static final int BHSTARTX = 20;
     private static final int BJSTARTY = 25;
     private static final int BHSTARTY = 15;
@@ -34,12 +34,14 @@ public class Bomberman {
         screen.setCursorPosition(null);
 
         draw(map.getCells(), screen);
-        BomberJoe bJ = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(25, 254, 21), screen, new TextColor.RGB(123, 234, 0)
-                , map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(0, 0, 250), map.getCells());
-        BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(25, 254, 21), screen, new TextColor.RGB(123, 234, 0)
-                , map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(0, 0, 250), map.getCells());
+
+        BomberJoe bJ = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0)
+                , map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+        BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0)
+                , map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
         bH.setEnemy(bJ);
         bJ.setEnemy(bH);
+
 
         bJ.start();
         try {
@@ -61,12 +63,25 @@ public class Bomberman {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+<<<<<<< HEAD
         } while (inGame);
+=======
+
+        }while(inGame);
+        Music endGame = new Music("src/Sounds/smb_mariodie.wav");
+        endGame.start();
+>>>>>>> 181bd19e90c6dbd0410445c6bd648e902f6867dd
         screen.refresh();
+        Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         Thread.sleep(3000);
+<<<<<<< HEAD
+=======
+        endGame.mediaPlayer.pause();
+        gameOver.start();
+>>>>>>> 181bd19e90c6dbd0410445c6bd648e902f6867dd
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
-        if (bJ.isAlive()) {
+        if (bJ.isLiving()) {
             tg.putString(30, 20, "Joe wins! Hose loses! You suck!");
         } else {
             tg.putString(30, 20, "Hose wins! Joe loses! You suck!");

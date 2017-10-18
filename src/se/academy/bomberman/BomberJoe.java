@@ -9,13 +9,16 @@ import java.io.IOException;
 public class BomberJoe extends PlayerHoes {
 
 
-    public BomberJoe(int x, int y, char playerModel, TextColor playerColor,
-                     Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
-        super(x, y, playerModel, playerColor, screen, bombColor, bg, bombBG, map);
+    BomberJoe(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
+        super(x, y, playerModel, playerColor, playerBG, screen, bombColor, bg, bombBG, map);
     }
+
     @Override
     public void run() {
-
+        bombPlant = new Sound("src/Sounds/smb_fireball.wav");
+        bombPlant.start();
+        bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
+        bombExplode.start();
         while (true) {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;

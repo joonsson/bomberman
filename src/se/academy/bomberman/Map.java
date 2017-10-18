@@ -98,7 +98,7 @@ class MapCell {
     MapCell() {
         this.walkable = true;
         destructible = false;
-        this.color = new TextColor.RGB(250, 250, 250);
+        this.color = new TextColor.RGB(55,55,10);
     }
 
     // region Getters/Setters
