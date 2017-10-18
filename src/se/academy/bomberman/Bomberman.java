@@ -170,14 +170,14 @@ public class Bomberman {
         if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE && player1.bomb.isVisible()) {
             player1.explode();
         }
-        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE/2 && !player1.bomb.isVisible()) {
+        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE / 2 && !player1.bomb.isVisible()) {
             player1.deplode();
         }
 
         if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
             player2.explode();
         }
-        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE/2 && !player2.bomb.isVisible()) {
+        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE / 2 && !player2.bomb.isVisible()) {
             player2.deplode();
         }
     }
