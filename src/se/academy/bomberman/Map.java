@@ -5,95 +5,112 @@ import com.googlecode.lanterna.TextColor;
 public class Map {
 
     private static Map map = new Map();
-    private MapCell [][] cells;
+    private MapCell[][] cells;
     private int rows, columns;
+    private TextColor wallColor = new TextColor.RGB(4, 54, 0);
 
-    Map(){}
+    private Map() {
+    }
 
-    Map(int columns, int rows){
+    Map(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
         init();
     }
 
-    private void init(){
-        cells =  new MapCell[columns][rows];
-        for(int i = 0; i < columns; i++){
-            for(int j = 0; j < rows; j++){
+    private void init() {
+        cells = new MapCell[columns][rows];
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < rows; j++) {
                 cells[i][j] = new MapCell();
             }
         }
         drawWalls();
     }
 
-    private void drawWalls(){
-        for(int i = 0; i < getColumns(); i++){
+    private void drawWalls() {
+        for (int i = 0; i < getColumns(); i++) {
 
-            for(int j = 0; j < getRows(); j++){
+            for (int j = 0; j < getRows(); j++) {
 
-                if(i == 0 || i == getColumns()-1){
+                if (i == 0 || i == getColumns() - 1) {
 
-                    cells[0][j].setColor(new TextColor.RGB(255,0,0)); // TODO sätt en konstant färgvariabel
+                    cells[0][j].setColor(wallColor); // TODO sätt en konstant färgvariabel
                     cells[0][j].setWalkable(false);
 
-                    cells[getColumns()-1][j].setColor(new TextColor.RGB(255,0,0));
-                    cells[getColumns()-1][j].setWalkable(false);
+                    cells[getColumns() - 1][j].setColor(wallColor);
+                    cells[getColumns() - 1][j].setWalkable(false);
 
-                }else if (j == 0 || j == getRows() - 1){
+                } else if (j == 0 || j == getRows() - 1) {
 
-                    cells[i][j].setColor(new TextColor.RGB(255,0,0));
+                    cells[i][j].setColor(wallColor);
                     cells[i][j].setWalkable(false);
 
-                }else if (i % 10 == 0 && j % 5 == 0) {
-                    for (int n = i - 3; n < i; n++) {
-                        for (int m = j - 3; m < j; m++) {
-                            cells[n][m].setColor(new TextColor.RGB(255,0,0));
-                            cells[n][m].setWalkable(false);
-                        }
-                    }
+                } else if (i % 10 == 0 && j % 5 == 0) {
+                    drawObstacles();
                 }
             }
         }
     }
 
-    public MapCell[][] getCells() {
+    private void drawObstacles() {
+        for (int x = 4; x < getColumns(); x = x + 6) {
+            for (int y = 3; y < getRows(); y = y+4) {
+                for ( int o = y; o <= y+1; o++){
+                    createBlock(x, o);
+                }
+            }
+        }
+    }
+
+    private void createBlock(int n, int o){
+        cells[n][o].setColor(wallColor);
+        cells[n+1][o].setColor(wallColor);
+        cells[n+2][o].setColor(wallColor);
+        cells[n+1][o].setWalkable(false);
+        cells[n+2][o].setWalkable(false);
+    }
+
+
+    MapCell[][] getCells() {
         return cells;
     }
 
-    public int getRows() {
+    int getRows() {
         return rows;
     }
 
-    public int getColumns() {
+    int getColumns() {
         return columns;
     }
 
     public void setCells(MapCell[][] cells) {
         this.cells = cells;
     }
+
 }
 
-class MapCell{
-    boolean walkable;
+class MapCell {
+    private boolean walkable;
+    private boolean destructible;
     TextColor color;
-    boolean destructible;
 
-    MapCell(){
+    MapCell() {
         this.walkable = true;
         destructible = false;
         this.color = new TextColor.RGB(55,55,10);
     }
 
     // region Getters/Setters
-    public void setWalkable(boolean walkable) {
+    void setWalkable(boolean walkable) {
         this.walkable = walkable;
     }
 
-    public void setColor(TextColor color) {
+    void setColor(TextColor color) {
         this.color = color;
     }
 
-    public boolean isWalkable() {
+    boolean isWalkable() {
         return walkable;
     }
 

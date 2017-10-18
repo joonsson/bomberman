@@ -70,8 +70,6 @@ public class Bomberman {
         screen.refresh();
         Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         Thread.sleep(3000);
-        endGame.mediaPlayer.pause();
-        gameOver.start();
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
         if (bJ.isLiving()) {
