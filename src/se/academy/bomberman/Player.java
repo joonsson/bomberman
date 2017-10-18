@@ -71,7 +71,7 @@ public class Player {
             bomb.setVisible(true);
             for (int i = posX; i < posX + 3; i++) {
                 for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(getPosX(), getPosY(), playerModelBomb);
+//                    screen.setCharacter(getPosX(), getPosY(), playerModelBomb);
                     map[getPosX()][getPosY()].setWalkable(false);
                 }
             }
@@ -160,7 +160,6 @@ public class Player {
     }
 
     protected void deplode() {
-        System.out.println("deplode()");
         for (int i = bomb.getPosX() - 5; i < bomb.getPosX() + 8; i++) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
