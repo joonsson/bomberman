@@ -63,22 +63,13 @@ public class Bomberman {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-<<<<<<< HEAD
-        } while (inGame);
-=======
 
         }while(inGame);
         Music endGame = new Music("src/Sounds/smb_mariodie.wav");
         endGame.start();
->>>>>>> 181bd19e90c6dbd0410445c6bd648e902f6867dd
         screen.refresh();
         Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         Thread.sleep(3000);
-<<<<<<< HEAD
-=======
-        endGame.mediaPlayer.pause();
-        gameOver.start();
->>>>>>> 181bd19e90c6dbd0410445c6bd648e902f6867dd
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
         if (bJ.isLiving()) {
