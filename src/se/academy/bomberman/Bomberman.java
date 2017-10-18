@@ -11,11 +11,11 @@ import javafx.embed.swing.JFXPanel;
 import java.io.IOException;
 
 public class Bomberman {
-    private static final int COLUMNS = 100;
-    private static final int ROWS = 50;
-    private static final int BJSTARTX = 30;
+    private static final int COLUMNS = 29;
+    private static final int ROWS = 18;
+    private static final int BJSTARTX = 20;
     private static final int BHSTARTX = 20;
-    private static final int BJSTARTY = 25;
+    private static final int BJSTARTY = 10;
     private static final int BHSTARTY = 15;
     private static final long DELTAT = 16;
     public static boolean inGame = true;
