@@ -35,12 +35,19 @@ public class Bomberman {
 
         draw(map.getCells(), screen);
 
+<<<<<<< HEAD
 
         BomberJoe bJ = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(25, 254, 21), screen, new TextColor.RGB(123, 234, 0)
                 , map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(0, 0, 250), map.getCells());
         BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(25, 254, 21), screen, new TextColor.RGB(123, 234, 0)
                 , map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(0, 0, 250), map.getCells());
 
+=======
+        BomberJoe bJ = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0)
+                , map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+        BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0)
+                , map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+>>>>>>> 73686fc3e7033bdb2e62932a920384da4ddf0104
         bH.setEnemy(bJ);
         bJ.setEnemy(bH);
 

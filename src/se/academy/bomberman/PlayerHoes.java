@@ -27,16 +27,18 @@ public class PlayerHoes extends Thread {
     protected PlayerHoes enemy;
     protected Sound bombPlant;
     protected Sound bombExplode;
+    protected TextColor playerBG;
 
 
 
-    PlayerHoes(int x, int y, char playerModel, TextColor playerColor, Screen screen,
+    PlayerHoes(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
                TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
 
         this.bg = bg;
+        this.playerBG = playerBG;
         this.posX = x;
         this.posY = y;
-        this.playerModel = new TextCharacter(playerModel,playerColor, bg);
+        this.playerModel = new TextCharacter(playerModel,playerColor, playerBG);
         this.vSpeed = 2;
         this.hSpeed = 3;
         this.screen = screen;
@@ -141,15 +143,19 @@ public class PlayerHoes extends Thread {
         boolean hit = false;
         boolean enemyHit = false;
         bombExplode.play();
-        for (int i = bomb.getPosX() -5; i < bomb.getPosX() + 5; i++) {
-            if (i == posX && bomb.getPosY() == posY) hit = true;
-            if (i == enemy.getPosX() && bomb.getPosY() == enemy.getPosY()) enemyHit = true;
-            screen.setCharacter(i, bomb.getPosY(), new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+        for (int i = bomb.getPosX() - 5; i < bomb.getPosX() + 8; i++) {
+            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                if (i == posX && j == posY) hit = true;
+                if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+            }
         }
-        for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 5; j++) {
-            if (j == posY && bomb.getPosX() == posX) hit = true;
-            if (j == enemy.getPosY() && bomb.getPosX() == enemy.getPosX()) enemyHit = true;
-            screen.setCharacter(bomb.getPosX(), j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+        for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 7; j++) {
+            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+                if (j == posY && i == posX) hit = true;
+                if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+            }
         }
         if (hit) {
             living = false;
@@ -162,12 +168,16 @@ public class PlayerHoes extends Thread {
         bomb.setStart(System.currentTimeMillis());
     }
     protected void deplode() {
-        for (int i = bomb.getPosX() -5; i < bomb.getPosX() + 5; i++) {
-            screen.setCharacter(i, bomb.getPosY(), new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+        for (int i = bomb.getPosX() - 5; i < bomb.getPosX() + 8; i++) {
+            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            }
         }
-        for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 5; j++) {
-            screen.setCharacter(bomb.getPosX(), j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
-        }
+            for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 7; j++) {
+                for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+                    screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                }
+            }
         bombed = false;
     }
     // region Getters/Setters

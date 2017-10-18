@@ -10,11 +10,10 @@ import java.io.IOException;
 public class BomberHose extends PlayerHoes {
 
 
-
-    public BomberHose(int x, int y, char playerModel, TextColor playerColor,
-                     Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
-        super(x, y, playerModel, playerColor, screen, bombColor, bg, bombBG, map);
+    BomberHose(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
+        super(x, y, playerModel, playerColor, playerBG, screen, bombColor, bg, bombBG, map);
     }
+
     @Override
     public void run() {
         bombPlant = new Sound("src/Sounds/smb_fireball.wav");
