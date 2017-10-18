@@ -13,7 +13,7 @@ import java.io.IOException;
 public class Bomberman {
     private static final int COLUMNS = 100;
     private static final int ROWS = 50;
-    private static final int BJSTARTX = 50;
+    private static final int BJSTARTX = 30;
     private static final int BHSTARTX = 20;
     private static final int BJSTARTY = 25;
     private static final int BHSTARTY = 15;
@@ -65,11 +65,16 @@ public class Bomberman {
             }
 
         }while(inGame);
+        Music endGame = new Music("src/Sounds/smb_mariodie.wav");
+        endGame.start();
         screen.refresh();
+        Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         Thread.sleep(3000);
+        endGame.mediaPlayer.pause();
+        gameOver.start();
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
-        if (bJ.isAlive()) {
+        if (bJ.isLiving()) {
             tg.putString(30, 20, "Joe wins! Hose loses! You suck!");
         } else {
             tg.putString(30, 20, "Hose wins! Joe loses! You suck!");
