@@ -26,7 +26,6 @@ public class BomberJoe extends PlayerHoes {
             if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && !bomb.isVisible()) {
                 deplode();
             }
-            KeyStroke key = null;
 
             try {
                 key = screen.pollInput();
