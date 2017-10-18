@@ -37,14 +37,17 @@ public class Map {
 
                     cells[0][j].setColor(wallColor); // TODO sätt en konstant färgvariabel
                     cells[0][j].setWalkable(false);
+                    cells[0][j].setDestructible(false);
 
                     cells[getColumns() - 1][j].setColor(wallColor);
                     cells[getColumns() - 1][j].setWalkable(false);
+                    cells[getColumns() - 1][j].setDestructible(false);
 
                 } else if (j == 0 || j == getRows() - 1) {
 
                     cells[i][j].setColor(wallColor);
                     cells[i][j].setWalkable(false);
+                    cells[i][j].setDestructible(false);
 
                 } else if (i % 10 == 0 && j % 5 == 0) {
                     drawObstacles();
@@ -70,6 +73,9 @@ public class Map {
         cells[x][o].setWalkable(false);
         cells[x-1][o].setWalkable(false);
         cells[x-2][o].setWalkable(false);
+        cells[x][o].setDestructible(false);
+        cells[x-1][o].setDestructible(false);
+        cells[x-2][o].setDestructible(false);
     }
 
 
@@ -97,9 +103,9 @@ class MapCell {
     TextColor color;
 
     MapCell() {
-        this.walkable = true;
-        destructible = false;
-        this.color = new TextColor.RGB(55,55,10);
+        walkable = true;
+        destructible = true;
+        color = new TextColor.RGB(55,55,10);
     }
 
     // region Getters/Setters
@@ -109,6 +115,14 @@ class MapCell {
 
     void setColor(TextColor color) {
         this.color = color;
+    }
+
+    public boolean isDestructible() {
+        return destructible;
+    }
+
+    public void setDestructible(boolean destructible) {
+        this.destructible = destructible;
     }
 
     boolean isWalkable() {
