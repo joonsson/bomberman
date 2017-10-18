@@ -12,11 +12,11 @@ import java.io.IOException;
 
 public class Bomberman {
     private static final int COLUMNS = 29;
-    private static final int ROWS = 18;
-    private static final int BJSTARTX = 20;
-    private static final int BHSTARTX = 20;
-    private static final int BJSTARTY = 10;
-    private static final int BHSTARTY = 15;
+    private static final int ROWS = 20;
+    private static final int BJSTARTX = 1;
+    private static final int BHSTARTX = 25;
+    private static final int BJSTARTY = 1;
+    private static final int BHSTARTY = 17;
     private static final long DELTAT = 16;
     public static boolean inGame = true;
 
@@ -35,10 +35,13 @@ public class Bomberman {
 
         draw(map.getCells(), screen);
 
-        BomberJoe bJ = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0)
-                , map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
-        BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0)
-                , map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+        BomberJoe bJ  = new BomberJoe(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
+                        new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
+                        map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+
+        BomberHose bH = new BomberHose(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
+                        new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
+                        map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
         bH.setEnemy(bJ);
         bJ.setEnemy(bH);
 

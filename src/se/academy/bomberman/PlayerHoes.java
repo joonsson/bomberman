@@ -138,6 +138,7 @@ public class PlayerHoes extends Thread {
             }
         }
     }
+
     protected void explode() {
         bombPlant.stopp();
         boolean hit = false;
