@@ -145,9 +145,11 @@ public class Player {
                     hitWall = true;
                     break;
                 }
+                map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
                 if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+
             }
             if(hitWall)break;
         }
@@ -159,6 +161,7 @@ public class Player {
                     hitWall = true;
                     break;
                 }
+                map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
                 if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
@@ -174,6 +177,7 @@ public class Player {
                     hitWall = true;
                     break;
                 }
+                map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
                 if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
@@ -189,6 +193,7 @@ public class Player {
                     hitWall = true;
                     break;
                 }
+                map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
                 if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));

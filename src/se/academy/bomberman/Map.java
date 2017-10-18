@@ -4,21 +4,17 @@ import com.googlecode.lanterna.TextColor;
 
 public class Map {
 
-    private static Map map = new Map();
     private MapCell[][] cells;
     private int rows, columns;
-    static int NORMAL = 0, BLOCKS = 1;
-    int mode;
-    int blockSizeX = 3, blockSizeY = 2;
-
-    private Map() {
-    }
+    static int NORMAL = 0, BLOCKS = 1, RANDOM = 2;
+    private int mode;
+    private static int blockSizeX = 3, blockSizeY = 2;
 
     Map(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
+        setMode(BLOCKS);
         init();
-        mode = BLOCKS;
     }
 
     private void init() {
@@ -63,43 +59,70 @@ public class Map {
 
     private void drawObstacles() {
         for (int x = blockSizeX * 2; x < getColumns(); x = x + blockSizeX * 2) {
-            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY) {
-                for (int o = y; o < getColumns() + 1 && o <= y + 1; o++) {
-                    createBlock(x, o, false);
+            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY*2) {
+                createBlock(x, y, false);
                 }
             }
-        }
+            createBlock(6,1, true);
+        System.out.println("Before getmode" + getMode());
         if (getMode() == BLOCKS) {
-            for (int x = blockSizeX; x < getColumns(); x = x + blockSizeX) {
-                for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY) {
-                    for (int o = y; o < getColumns() + 1 && o <= y + 1; o++) {
-                        if(x > getColumns()-blockSizeX*2 && o < getRows()-blockSizeY*2 ){
-                            createBlock(x, o, true);
-                        }
-                    }
-                }
-            }
+            System.out.println("After getmode");
         }
     }
+//            for (int x = blockSizeX; x < getColumns(); x = x + blockSizeX) {
+//                for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY) {
+//                    for (int o = y; o < getColumns() + 1 && o <= y + 1; o++) {
+////                        if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
+////                            x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1){
+//                        System.out.println("creat destructible blocks");
+//                        createBlock(x, o, true);
+////                        }
+//                    }
+//                }
+//            }
+//        }
 
+    private void createBlock(int startX, int startY, boolean destructible) {
 
+        for(int y = startY; y <= startY+1; y++){
+            for(int x = startX; x >= startX-2; x--){
+                cells[x][y].setColor(getWallColor(destructible));
+                cells[x][y].setWalkable(false);
+                cells[x][y].setDestructible(destructible);
+            }
+        /*
+        cells[x][y].setColor(getWallColor(destructible));
+        cells[x][y].setDestructible(destructible);
+        cells[x][y].setWalkable(false);
 
-    private void createBlock(int x, int o, boolean destructible) { // TODO deplode() om block är destructible på, sätt walkable
+        cells[x - 1][y].setColor(getWallColor(destructible));
+        cells[x - 1][y].setWalkable(false);
+        cells[x - 1][y].setDestructible(destructible);
 
-        cells[x][o].setColor(getWallColor(destructible));
-        cells[x - 1][o].setColor(getWallColor(destructible));
-        cells[x - 2][o].setColor(getWallColor(destructible));
-        cells[x][o].setWalkable(false);
-        cells[x - 1][o].setWalkable(false);
-        cells[x - 2][o].setWalkable(false);
-        cells[x][o].setDestructible(destructible);
-        cells[x - 1][o].setDestructible(destructible);
-        cells[x - 2][o].setDestructible(destructible);
-    }
+        cells[x - 2][y].setWalkable(false);
+        cells[x - 2][y].setColor(getWallColor(destructible));
+        cells[x - 2][y].setDestructible(destructible);
+
+        cells[x][y+1].setColor(getWallColor(destructible));
+        cells[x][y+1].setDestructible(destructible);
+        cells[x][y+1].setWalkable(false);
+
+        cells[x - 1][y+1].setColor(getWallColor(destructible));
+        cells[x - 1][y+1].setWalkable(false);
+        cells[x - 1][y+1].setDestructible(destructible);
+
+        cells[x - 2][y+1].setWalkable(false);
+        cells[x - 2][y+1].setColor(getWallColor(destructible));
+        cells[x - 2][y+1].setDestructible(destructible);*/
+    }}
 
     private TextColor getWallColor(boolean destructible) {
-        if (destructible) return new TextColor.RGB(4, 100, 0);
-        else return new TextColor.RGB(4, 54, 0);
+        if (destructible) {
+            return new TextColor.RGB(4, 100, 0);
+        }
+        else {
+            return new TextColor.RGB(4, 54, 0);
+        }
     }
 
     // region Getters/Setters MAP
@@ -120,7 +143,7 @@ public class Map {
         this.cells = cells;
     }
 
-    public int getMode() {
+    private int getMode() {
         return mode;
     }
 
@@ -178,4 +201,11 @@ class MapCell {
         if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
            x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1
 
+
+
+¤|¤
+(_)
+
+   /*
+  HHH
  */
