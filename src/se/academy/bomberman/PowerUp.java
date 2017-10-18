@@ -6,7 +6,7 @@ public class PowerUp {
     private boolean inmortal;
     private boolean biggerBombs;
 
-    public PowerUp (PlayerHoes speed ){
+    public PowerUp (){
         this.speed = 1;
 
     }

@@ -1,3 +1,4 @@
+/*
 package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
@@ -6,15 +7,15 @@ import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
 
-public class BomberJoe extends PlayerHoes {
+public class Player1 extends Player {
 
 
-    BomberJoe(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
+    (int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
         super(x, y, playerModel, playerColor, playerBG, screen, bombColor, bg, bombBG, map);
     }
 
-    @Override
-    public void run() {
+
+    public void () {
         bombPlant = new Sound("src/Sounds/smb_fireball.wav");
         bombPlant.start();
         bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
@@ -23,10 +24,10 @@ public class BomberJoe extends PlayerHoes {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
 
-            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && bomb.isVisible()) {
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > FUSE && bomb.isVisible()) {
                 explode();
             }
-            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && !bomb.isVisible()) {
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > FUSE && !bomb.isVisible()) {
                 deplode();
             }
 
@@ -72,3 +73,4 @@ public class BomberJoe extends PlayerHoes {
     }
 
 }
+*/

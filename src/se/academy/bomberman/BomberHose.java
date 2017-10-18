@@ -1,3 +1,4 @@
+/*
 package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
@@ -7,7 +8,7 @@ import com.googlecode.lanterna.screen.Screen;
 
 import java.io.IOException;
 
-public class BomberHose extends PlayerHoes {
+public class BomberHose extends Player {
 
 
     BomberHose(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
@@ -24,15 +25,17 @@ public class BomberHose extends PlayerHoes {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
 
-            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && bomb.isVisible()) {
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > FUSE && bomb.isVisible()) {
                 explode();
             }
-            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && !bomb.isVisible()) {
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > FUSE && !bomb.isVisible()) {
                 deplode();
             }
 
             try {
-                key = screen.pollInput();
+                synchronized (screen) {
+                    key = screen.pollInput();
+                }
                 if (key != null) {
                     if (key.isAltDown()) {
                         dropBomb();
@@ -76,3 +79,4 @@ public class BomberHose extends PlayerHoes {
     }
 }
 
+*/

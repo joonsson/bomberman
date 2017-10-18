@@ -54,21 +54,22 @@ public class Map {
     }
 
     private void drawObstacles() {
-        for (int x = 4; x < getColumns(); x = x + 6) {
-            for (int y = 3; y < getRows(); y = y+4) {
-                for ( int o = y; o <= y+1; o++){
+        for (int x = 6; x < getColumns(); x = x + 6) {
+            for (int y = 3; y < getRows()-1; y = y+4) {
+                for ( int o = y; o < getColumns()+1 && o <= y+1; o++){
                     createBlock(x, o);
                 }
             }
         }
     }
 
-    private void createBlock(int n, int o){
-        cells[n][o].setColor(wallColor);
-        cells[n+1][o].setColor(wallColor);
-        cells[n+2][o].setColor(wallColor);
-        cells[n+1][o].setWalkable(false);
-        cells[n+2][o].setWalkable(false);
+    private void createBlock(int x, int o){
+        cells[x][o].setColor(wallColor);
+        cells[x-1][o].setColor(wallColor);
+        cells[x-2][o].setColor(wallColor);
+        cells[x][o].setWalkable(false);
+        cells[x-1][o].setWalkable(false);
+        cells[x-2][o].setWalkable(false);
     }
 
 
