@@ -64,15 +64,14 @@ public class Player {
 
     protected void dropBomb() {
 
-        if (!bomb.isVisible()) {
-            bombExplode.stopp();
+        if (!bombed) {
             bomb.setPosX(posX);
             bomb.setPosY(posY);
             bomb.setVisible(true);
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
+            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+                for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
 //                    screen.setCharacter(getPosX(), getPosY(), playerModelBomb);
-                    map[getPosX()][getPosY()].setWalkable(false);
+                    map[i][j].setWalkable(false);
                 }
             }
             bomb.setStart(System.currentTimeMillis());
@@ -130,11 +129,15 @@ public class Player {
     }
 
     protected void explode() {
-        bombPlant.stopp();
         boolean hit = false;
         boolean enemyHit = false;
         boolean hitWall = false;
         bombExplode.play();
+        for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
+            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                map[i][j].setWalkable(true);
+            }
+        }
         // VÄNSTER
         for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
@@ -156,6 +159,7 @@ public class Player {
                     hitWall = true;
                     break;
                 }
+                if (i == posX && j == posY) hit = true;
                 if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
             }
@@ -204,15 +208,55 @@ public class Player {
     }
 
     protected void deplode() {
-        for (int i = bomb.getPosX() - 5; i < bomb.getPosX() + 8; i++) {
+        boolean hitWall = false;
+        // VÄNSTER
+        for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
+            if(hitWall)break;
         }
-        for (int j = bomb.getPosY() - 6; j < bomb.getPosY() + 6; j++) {
-            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+        hitWall = false;
+        // Höger
+        for (int i = bomb.getPosX(); i < bomb.getPosX() + 9; i++) {
+            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
+            if(hitWall)break;
+        }
+        hitWall = false;
+
+        //Uppåt
+        for (int j = bomb.getPosY(); j > bomb.getPosY() - 5; j--) {
+            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            }
+            if(hitWall) break;
+        }
+        hitWall = false;
+
+        // NERÅT
+        for (int j = bomb.getPosY(); j < bomb.getPosY() + 6; j++) {
+            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            }
+            if(hitWall) break;
         }
         bombed = false;
     }

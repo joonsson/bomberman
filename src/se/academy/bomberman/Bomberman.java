@@ -41,7 +41,8 @@ public class Bomberman {
         Music brinstar = new Music("src/Sounds/Brinstar.mp3");
         //brinstar.start();
         screen.setCursorPosition(null);
-
+        do {
+            screen.clear();
         draw(map.getCells(), screen);
 
         Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
@@ -59,48 +60,41 @@ public class Bomberman {
         players.add(player1);
         players.add(player2);
 
+            do {
+                long delay = System.currentTimeMillis();
+                screen.refresh();
 
-        do {
-            long delay = System.currentTimeMillis();
+                bombCheck(players); // TODO walkable igen
+                keyCheck(screen.pollInput(), players);
+
+                delay = System.currentTimeMillis() - delay;
+                delay = DELTAT - delay;
+                if (delay < 0) {
+                    delay = DELTAT;
+                }
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            } while (inGame);
+            Music endGame = new Music("src/Sounds/smb_mariodie.wav");
+            endGame.start();
             screen.refresh();
-
-            bombCheck(players); // TODO walkable igen
-            keyCheck(screen.pollInput(), players);
-
-            delay = System.currentTimeMillis() - delay;
-            delay = DELTAT - delay;
-            if (delay < 0) {
-                delay = DELTAT;
+            Music gameOver = new Music("src/Sounds/smb_gameover.wav");
+            Thread.sleep(3000);
+            screen.clear();
+            TextGraphics tg = screen.newTextGraphics();
+            if (player1.isLiving()) {
+                tg.putString(6, 8, "Player1 wins!");
+                tg.putString(6, 12, "Player2 sucks!");
+            } else {
+                tg.putString(6, 8, "Player2 wins!");
+                tg.putString(6, 12, "Player1 sucks!");
             }
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        } while (inGame);
-        Music endGame = new Music("src/Sounds/smb_mariodie.wav");
-        endGame.start();
-        screen.refresh();
-        Music gameOver = new Music("src/Sounds/smb_gameover.wav");
-        Thread.sleep(3000);
-        screen.clear();
-        TextGraphics tg = screen.newTextGraphics();
-        if (player1.isLiving()) {
-            tg.putString(6, 8, "Player1 wins!");
-            tg.putString(6, 12, "Player2 sucks!");
-        } else {
-            tg.putString(6, 8, "Player2 wins!");
-            tg.putString(6, 12, "Player1 sucks!");
-        }
-        try {
-            screen.refresh();
-            Thread.sleep(5000);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            
+        } while(true);
 
     }
 
@@ -165,14 +159,14 @@ public class Bomberman {
         if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE && player1.bomb.isVisible()) {
             player1.explode();
         }
-        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE/2 && !player1.bomb.isVisible()) {
+        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE/4 && !player1.bomb.isVisible()) {
             player1.deplode();
         }
 
         if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
             player2.explode();
         }
-        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE/2 && !player2.bomb.isVisible()) {
+        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE/4 && !player2.bomb.isVisible()) {
             player2.deplode();
         }
     }
