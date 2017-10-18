@@ -59,14 +59,15 @@ public class Map {
 
     private void drawObstacles() {
         for (int x = blockSizeX * 2; x < getColumns(); x = x + blockSizeX * 2) {
-            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY*2) {
-                createBlock(x, y, false);
-                }
+            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY * 2) {
+                createBlockAt(x, y, false);
             }
-            createBlock(6,1, true);
-        System.out.println("Before getmode" + getMode());
+        }
         if (getMode() == BLOCKS) {
-            System.out.println("After getmode");
+            createBlockAt(6, 1, true);
+            // TODO add code to place destructiblocks in grid
+        }else if (getMode()== RANDOM){
+            // TODO add code to place destructiblocks randomly
         }
     }
 //            for (int x = blockSizeX; x < getColumns(); x = x + blockSizeX) {
@@ -82,45 +83,21 @@ public class Map {
 //            }
 //        }
 
-    private void createBlock(int startX, int startY, boolean destructible) {
+    private void createBlockAt(int startX, int startY, boolean destructible) {
 
-        for(int y = startY; y <= startY+1; y++){
-            for(int x = startX; x >= startX-2; x--){
+        for (int y = startY; y <= startY + 1; y++) {
+            for (int x = startX; x >= startX - 2; x--) {
                 cells[x][y].setColor(getWallColor(destructible));
                 cells[x][y].setWalkable(false);
                 cells[x][y].setDestructible(destructible);
             }
-        /*
-        cells[x][y].setColor(getWallColor(destructible));
-        cells[x][y].setDestructible(destructible);
-        cells[x][y].setWalkable(false);
-
-        cells[x - 1][y].setColor(getWallColor(destructible));
-        cells[x - 1][y].setWalkable(false);
-        cells[x - 1][y].setDestructible(destructible);
-
-        cells[x - 2][y].setWalkable(false);
-        cells[x - 2][y].setColor(getWallColor(destructible));
-        cells[x - 2][y].setDestructible(destructible);
-
-        cells[x][y+1].setColor(getWallColor(destructible));
-        cells[x][y+1].setDestructible(destructible);
-        cells[x][y+1].setWalkable(false);
-
-        cells[x - 1][y+1].setColor(getWallColor(destructible));
-        cells[x - 1][y+1].setWalkable(false);
-        cells[x - 1][y+1].setDestructible(destructible);
-
-        cells[x - 2][y+1].setWalkable(false);
-        cells[x - 2][y+1].setColor(getWallColor(destructible));
-        cells[x - 2][y+1].setDestructible(destructible);*/
-    }}
+        }
+    }
 
     private TextColor getWallColor(boolean destructible) {
         if (destructible) {
             return new TextColor.RGB(4, 100, 0);
-        }
-        else {
+        } else {
             return new TextColor.RGB(4, 54, 0);
         }
     }
