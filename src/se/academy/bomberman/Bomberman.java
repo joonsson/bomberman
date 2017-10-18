@@ -170,6 +170,7 @@ public class Bomberman {
             Thread.sleep(3000);
             screen.clear();
             tg = screen.newTextGraphics();
+            gameOver.start();
             if (player1.isLiving()) {
                 BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p1win.txt")));
                 String s = reader.readLine();
