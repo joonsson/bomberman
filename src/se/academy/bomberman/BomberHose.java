@@ -32,7 +32,9 @@ public class BomberHose extends PlayerHoes {
             }
 
             try {
-                key = screen.pollInput();
+                synchronized (screen) {
+                    key = screen.pollInput();
+                }
                 if (key != null) {
                     if (key.isAltDown()) {
                         dropBomb();
