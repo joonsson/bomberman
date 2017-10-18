@@ -23,9 +23,9 @@ public class Bomberman {
     private static final int COLUMNS = 29;
     private static final int ROWS = 20;
     private static final int BJSTARTX = 1;
-    private static final int BHSTARTX = 25;
+    private static final int BHSTARTX = COLUMNS-4;
     private static final int BJSTARTY = 1;
-    private static final int BHSTARTY = 17;
+    private static final int BHSTARTY = ROWS-3;
     private static final long DELTAT = 16;
     public static boolean inGame = true;
 
