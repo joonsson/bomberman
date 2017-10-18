@@ -87,9 +87,11 @@ public class Bomberman {
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
         if (player1.isLiving()) {
-            tg.putString(30, 20, "Joe wins! Hose loses! You suck!");
+            tg.putString(6, 8, "Player1 wins!");
+            tg.putString(6, 12, "Player2 sucks!");
         } else {
-            tg.putString(30, 20, "Hose wins! Joe loses! You suck!");
+            tg.putString(6, 8, "Player2 wins!");
+            tg.putString(6, 12, "Player1 sucks!");
         }
         try {
             screen.refresh();
