@@ -56,7 +56,7 @@ public class Map {
     private void drawObstacles() {
         for (int x = 4; x < getColumns(); x = x + 6) {
             for (int y = 3; y < getRows(); y = y+4) {
-                for ( int o = y; o <= y+1; o++){
+                for ( int o = y; o <= y+1 && o < getColumns()+1; o++){
                     createBlock(x, o);
                 }
             }
