@@ -22,7 +22,7 @@ public class Bomberman {
     private static final long DELTAT = 16;
     public static boolean inGame = true;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         JFXPanel jfx = new JFXPanel();
 
         Map map = new Map(COLUMNS, ROWS);
@@ -40,6 +40,8 @@ public class Bomberman {
                 ,map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(0,0,250),map.getCells());
         BomberHose bH = new BomberHose(BHSTARTX,BHSTARTY,'H',new TextColor.RGB(25,254,21),screen,new TextColor.RGB(123,234,0)
                 ,map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(0,0,250),map.getCells());
+        bH.setEnemy(bJ);
+        bJ.setEnemy(bH);
 
         bJ.start();
         try {
@@ -62,6 +64,8 @@ public class Bomberman {
                 e.printStackTrace();
             }
         }while(inGame);
+        screen.refresh();
+        Thread.sleep(3000);
         screen.clear();
         TextGraphics tg = screen.newTextGraphics();
         if (bJ.isAlive()) {

@@ -27,6 +27,7 @@ public class PlayerHoes extends Thread {
     protected final long BOMBD = 3000;
     protected boolean bombed;
     protected boolean living;
+    protected PlayerHoes enemy;
 
 
 
@@ -78,53 +79,57 @@ public class PlayerHoes extends Thread {
     }
 
     protected void move(int direction) {
+        if (Bomberman.inGame) {
+            if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+                screen.setCharacter(getPosX(), getPosY(), bomb.getModel());
 
-        if(bomb.isVisible()&&bomb.getPosX()==getPosX() && bomb.getPosY()==posY){
-            screen.setCharacter(getPosX(),getPosY(), bomb.getModel());
-
-        }else {
-            screen.setCharacter(getPosX(), getPosY(), new TextCharacter(' ',TextColor.ANSI.DEFAULT,bg));
+            } else {
+                screen.setCharacter(getPosX(), getPosY(), new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            }
+            switch (direction) {
+                case NORTH:
+                    if (map[getPosX()][getPosY() - 1].isWalkable()) {
+                        setPosY(getPosY() - speed);
+                    }
+                    break;
+                case SOUTH:
+                    if (map[getPosX()][getPosY() + 1].isWalkable()) {
+                        setPosY(getPosY() + speed);
+                    }
+                    break;
+                case WEST:
+                    if (map[getPosX() - 1][getPosY()].isWalkable()) {
+                        setPosX(getPosX() - speed);
+                    }
+                    break;
+                case EAST:
+                    if (map[getPosX() + 1][getPosY()].isWalkable()) {
+                        setPosX(getPosX() + speed);
+                    }
+                    break;
+            }
+            screen.setCharacter(getPosX(), getPosY(), playerModel);
         }
-        switch (direction) {
-            case NORTH:
-                if (map[getPosX()][getPosY()-1].isWalkable()) {
-                    setPosY(getPosY() - speed);
-                }
-                break;
-            case SOUTH:
-                if (map[getPosX()][getPosY()+1].isWalkable()) {
-                    setPosY(getPosY() + speed);
-                }
-                break;
-            case WEST:
-                if (map[getPosX()-1][getPosY()].isWalkable()) {
-                    setPosX(getPosX() - speed);
-                }
-                break;
-            case EAST:
-                if (map[getPosX()+1][getPosY()].isWalkable()) {
-                    setPosX(getPosX() + speed);
-                }
-                break;
-        }
-        screen.setCharacter(getPosX(), getPosY(), playerModel);
     }
     protected void explode() {
-        boolean joeHit = false;
-        boolean hoseHit = false;
+        boolean hit = false;
+        boolean enemyHit = false;
         for (int i = bomb.getPosX() -5; i < bomb.getPosX() + 5; i++) {
-            if (screen.getFrontCharacter(i, bomb.getPosY()).equals(playerModel)) hoseHit = true;
+            if (i == posX && bomb.getPosY() == posY) hit = true;
+            if (i == enemy.getPosX() && bomb.getPosY() == enemy.getPosY()) enemyHit = true;
             screen.setCharacter(i, bomb.getPosY(), new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
         }
         for (int j = bomb.getPosY() - 5; j < bomb.getPosY() + 5; j++) {
-            if (screen.getFrontCharacter(bomb.getPosX(), j).equals(playerModel)) hoseHit = true;
+            if (j == posY && bomb.getPosX() == posX) hit = true;
+            if (j == enemy.getPosY() && bomb.getPosX() == enemy.getPosX()) enemyHit = true;
             screen.setCharacter(bomb.getPosX(), j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
         }
-        if (hoseHit) {
+        if (hit) {
             living = false;
             Bomberman.inGame = false;
-        } else if (joeHit) {
-
+        } else if (enemyHit) {
+            enemy.living = false;
+            Bomberman.inGame = false;
         }
         bomb.setVisible(false);
         bomb.setStart(System.currentTimeMillis());
@@ -171,5 +176,13 @@ public class PlayerHoes extends Thread {
     public void setBombed(boolean bombed) {
         this.bombed = bombed;
     }
-//endregion
+
+    public PlayerHoes getEnemy() {
+        return enemy;
+    }
+
+    public void setEnemy(PlayerHoes enemy) {
+        this.enemy = enemy;
+    }
+    //endregion
 }

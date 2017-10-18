@@ -20,6 +20,14 @@ public class BomberJoe extends PlayerHoes {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
 
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && bomb.isVisible()) {
+                explode();
+            }
+            if (bombed && System.currentTimeMillis() - bomb.getStart() > BOMBD && !bomb.isVisible()) {
+                deplode();
+            }
+            KeyStroke key = null;
+
             try {
                 key = screen.pollInput();
                 if (key != null) {
@@ -60,4 +68,5 @@ public class BomberJoe extends PlayerHoes {
             }
         }
     }
+
 }
