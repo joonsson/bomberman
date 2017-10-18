@@ -15,7 +15,10 @@ public class BomberJoe extends PlayerHoes {
     }
     @Override
     public void run() {
-
+        bombPlant = new Sound("src/Sounds/smb_fireball.wav");
+        bombPlant.start();
+        bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
+        bombExplode.start();
         while (true) {
             long delay = System.currentTimeMillis();
             KeyStroke key = null;
