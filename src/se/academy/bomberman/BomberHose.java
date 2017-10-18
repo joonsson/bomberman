@@ -10,6 +10,7 @@ import java.io.IOException;
 public class BomberHose extends PlayerHoes {
 
 
+
     public BomberHose(int x, int y, char playerModel, TextColor playerColor,
                      Screen screen, TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
         super(x, y, playerModel, playerColor, screen, bombColor, bg, bombBG, map);
