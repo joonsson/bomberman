@@ -4,17 +4,16 @@ import com.googlecode.lanterna.TextColor;
 
 public class Map {
 
-    private static Map map = new Map();
     private MapCell[][] cells;
     private int rows, columns;
-    private TextColor wallColor = new TextColor.RGB(4, 54, 0);
-
-    private Map() {
-    }
+    static int NORMAL = 0, BLOCKS = 1, RANDOM = 2;
+    private int mode;
+    private static int blockSizeX = 3, blockSizeY = 2;
 
     Map(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
+        setMode(BLOCKS);
         init();
     }
 
@@ -25,29 +24,31 @@ public class Map {
                 cells[i][j] = new MapCell();
             }
         }
-        drawWalls();
+        drawMap();
     }
 
-    private void drawWalls() {
-        for (int i = 0; i < getColumns(); i++) {
+    private void drawMap() {
+        int columns = getColumns(), rows = getRows();
+        for (int i = 0; i < columns; i++) {
 
-            for (int j = 0; j < getRows(); j++) {
+            for (int j = 0; j < rows; j++) {
 
-                if (i == 0 || i == getColumns() - 1) {
+                if (i == 0 || i == columns - 1) {
 
-                    cells[0][j].setColor(wallColor); // TODO sätt en konstant färgvariabel
-                    cells[0][j].setWalkable(false);
                     cells[0][j].setDestructible(false);
+                    cells[0][j].setWalkable(false);
+                    cells[0][j].setColor(getWallColor(cells[0][j].isDestructible())); // TODO sätt en konstant färgvariabel
 
-                    cells[getColumns() - 1][j].setColor(wallColor);
-                    cells[getColumns() - 1][j].setWalkable(false);
-                    cells[getColumns() - 1][j].setDestructible(false);
+                    cells[columns - 1][j].setDestructible(false);
+                    cells[columns - 1][j].setWalkable(false);
+                    cells[columns - 1][j]
+                            .setColor(getWallColor(cells[columns - 1][j].isDestructible()));
 
-                } else if (j == 0 || j == getRows() - 1) {
+                } else if (j == 0 || j == rows - 1) {
 
-                    cells[i][j].setColor(wallColor);
-                    cells[i][j].setWalkable(false);
                     cells[i][j].setDestructible(false);
+                    cells[i][j].setWalkable(false);
+                    cells[i][j].setColor(getWallColor(cells[i][j].isDestructible()));
 
                 } else if (i % 10 == 0 && j % 5 == 0) {
                     drawObstacles();
@@ -57,27 +58,51 @@ public class Map {
     }
 
     private void drawObstacles() {
-        for (int x = 6; x < getColumns(); x = x + 6) {
-            for (int y = 3; y < getRows()-1; y = y+4) {
-                for ( int o = y; o < getColumns()+1 && o <= y+1; o++){
-                    createBlock(x, o);
-                }
+        for (int x = blockSizeX * 2; x < getColumns(); x = x + blockSizeX * 2) {
+            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY * 2) {
+                createBlockAt(x, y, false);
+            }
+        }
+        if (getMode() == BLOCKS) {
+            createBlockAt(6, 1, true);
+            // TODO add code to place destructiblocks in grid
+        }else if (getMode()== RANDOM){
+            // TODO add code to place destructiblocks randomly
+        }
+    }
+//            for (int x = blockSizeX; x < getColumns(); x = x + blockSizeX) {
+//                for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY) {
+//                    for (int o = y; o < getColumns() + 1 && o <= y + 1; o++) {
+////                        if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
+////                            x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1){
+//                        System.out.println("creat destructible blocks");
+//                        createBlock(x, o, true);
+////                        }
+//                    }
+//                }
+//            }
+//        }
+
+    private void createBlockAt(int startX, int startY, boolean destructible) {
+
+        for (int y = startY; y <= startY + 1; y++) {
+            for (int x = startX; x >= startX - 2; x--) {
+                cells[x][y].setColor(getWallColor(destructible));
+                cells[x][y].setWalkable(false);
+                cells[x][y].setDestructible(destructible);
             }
         }
     }
 
-    private void createBlock(int x, int o){
-        cells[x][o].setColor(wallColor);
-        cells[x-1][o].setColor(wallColor);
-        cells[x-2][o].setColor(wallColor);
-        cells[x][o].setWalkable(false);
-        cells[x-1][o].setWalkable(false);
-        cells[x-2][o].setWalkable(false);
-        cells[x][o].setDestructible(false);
-        cells[x-1][o].setDestructible(false);
-        cells[x-2][o].setDestructible(false);
+    private TextColor getWallColor(boolean destructible) {
+        if (destructible) {
+            return new TextColor.RGB(4, 100, 0);
+        } else {
+            return new TextColor.RGB(4, 54, 0);
+        }
     }
 
+    // region Getters/Setters MAP
 
     MapCell[][] getCells() {
         return cells;
@@ -95,6 +120,15 @@ public class Map {
         this.cells = cells;
     }
 
+    private int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    // endregion
 }
 
 class MapCell {
@@ -105,10 +139,10 @@ class MapCell {
     MapCell() {
         walkable = true;
         destructible = true;
-        color = new TextColor.RGB(55,55,10);
+        color = new TextColor.RGB(55, 55, 10);
     }
 
-    // region Getters/Setters
+    // region Getters/Setters MAPCELLS
     void setWalkable(boolean walkable) {
         this.walkable = walkable;
     }
@@ -134,5 +168,21 @@ class MapCell {
     }
 
     // endregion
-
 }
+
+
+/*
+        OM cellen är 2blocks+1 från hörn, samt om cellen INTE är destructible,
+        rita ett destructibleblock
+
+        if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
+           x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1
+
+
+
+¤|¤
+(_)
+
+   /*
+  HHH
+ */

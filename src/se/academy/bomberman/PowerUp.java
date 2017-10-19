@@ -2,6 +2,7 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 
 public class PowerUp {
@@ -19,6 +20,7 @@ public class PowerUp {
 
     private TextCharacter bombs = new TextCharacter('B');
     private TextCharacter speedigonzales = new TextCharacter('S');
+    private Bomberman bomberman;
 
 
     public PowerUp (int x , int y){
@@ -32,6 +34,7 @@ public class PowerUp {
 
     public void setDeath(boolean death) {
         this.death = death;
+        Bomberman.gameover.start();
     }
 
     public boolean isLife() {
@@ -40,6 +43,7 @@ public class PowerUp {
 
     public void setLife(boolean life) {
         this.life = life;
+        Music livingIsLife = new Music("src/Sounds/smb_powerup.wav");
     }
 
     public int getPosY() {
@@ -68,7 +72,17 @@ public class PowerUp {
         MapCell [][] cells =  map.getCells();
 
         screen.setCharacter(cells[getPosX()][getPosY()],new TextCharacter('B'));
+    }
+    public void drawSpeed(){
+        speedigonzales.getCharacter();
+        TextGraphics graphics;
+        graphics.fillRectangle(getPosX(),10,'S');
 
+    }
+    public void drawDeath(){
+
+    }
+    public void drawLife(){
 
     }
 }
