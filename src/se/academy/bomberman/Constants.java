@@ -4,26 +4,41 @@ import com.googlecode.lanterna.TextColor;
 
 public interface Constants {
 
-    int FUSE = 3000;
+    // BOMB
+    int FUSE = 1500;
+    int DROPCHANCE = 2;
 
+    // MAP
+    int wallThickness = 1;
+    int blockSizeX = 3;
+    int blockSizeY = 2;
     int size = 9;
-    int COLUMNS = size*3+2;
+    int COLUMNS = size*blockSizeX+wallThickness*2;
+    int ROWS = size*blockSizeY+wallThickness*2;
     int SCREENWIDTH = 129;
-    int ROWS = size*2+2;
     int SCREENHEIGHT = 49;
+
+    //TERRAIN
+    TextColor groundColor = new TextColor.RGB(55, 55, 10);
+    int GROUND = 0;
+    int SOLID = 1;
+    int SPAWN = 2;
+    int BASE = 3;
+    int BRICK = 4;
+    int NORMAL = 0;
+    int BLOCKS = 1;
+    int RANDOM = 2;
+
+    // PLAYERS
     int BJSTARTX = 1;
     int BHSTARTX = COLUMNS-4;
     int BJSTARTY = 1;
     int BHSTARTY = ROWS-3;
     long DELTAT = 16;
-    int GROUND = 0, SOLID = 1, SPAWN = 2, BASE = 3, BRICK = 4;
-    int NORMAL = 0, BLOCKS = 1, RANDOM = 2;
     int NORTH = 0;
     int SOUTH = 1;
     int WEST = 2;
     int EAST = 3;
-    int blockSizeX = 3, blockSizeY = 2;
-    TextColor groundColor = new TextColor.RGB(55, 55, 10);
     TextColor p1spawnColor = new TextColor.RGB(55, 55, 10); // Todo välj spelares basfärger
     TextColor p2spawnColor = new TextColor.RGB(55, 55, 10);
     TextColor p3spawnColor = new TextColor.RGB(55, 55, 10);

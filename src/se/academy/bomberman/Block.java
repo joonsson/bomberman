@@ -1,6 +1,6 @@
 package se.academy.bomberman;
 
-public class Block implements Constants{
+class Block implements Constants{
 
     Block(int type, int xPos, int yPos, Map map) {
         switch (type) {
@@ -24,6 +24,7 @@ public class Block implements Constants{
     }
 
     private void setBrick(int xPos, int yPos, Map map) {
+        map.getCells()[xPos-2][yPos].setDropsBoost(true);
         for (int y = yPos; y <= yPos + 1; y++) {
             for (int x = xPos; x >= xPos - 2; x--) {
                 map.getCells()[x][y].setColor(map.getWallColor(true));
@@ -47,7 +48,7 @@ public class Block implements Constants{
         }
     }
 
-    void setSolid(int xPos, int yPos, Map map) {
+    private void setSolid(int xPos, int yPos, Map map) {
         for (int y = yPos; y <= yPos + 1; y++) {
             for (int x = xPos; x >= xPos - 2; x--) {
                 map.getCells()[x][y].setColor(map.getWallColor(false));
@@ -58,7 +59,7 @@ public class Block implements Constants{
         }
     }
 
-    void setGround(int xPos, int yPos, Map map) {
+    private void setGround(int xPos, int yPos, Map map) {
         for (int y = yPos; y <= yPos + 1; y++) {
             for (int x = xPos; x >= xPos - 2; x--) {
                 map.getCells()[x][y].setColor(map.getGroundColor());
@@ -69,7 +70,7 @@ public class Block implements Constants{
         }
     }
 
-    void setSpawn(int xPos, int yPos, Map map) {
+    private void setSpawn(int xPos, int yPos, Map map) {
         for (int y = yPos; y <= yPos + 1; y++) {
             for (int x = xPos; x >= xPos - 2; x--) {
                 map.getCells()[x][y].setColor(map.getGroundColor());

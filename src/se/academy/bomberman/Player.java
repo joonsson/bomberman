@@ -2,22 +2,22 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
+
+import java.util.Random;
 
 public class Player implements Constants {
 
+    // region Variables
 
+    private double powerLevelBomb = 1;
+    private int powerLevelSpeed = 1;
     private int posX;
     private int posY;
     private TextCharacter playerModel;
     private int vSpeed;
     private int hSpeed;
     private Screen screen;
-    private final int NORTH = 0;
-    private final int SOUTH = 1;
-    private final int WEST = 2;
-    private final int EAST = 3;
     private Bomb bomb;
     private TextCharacter playerModelBomb;
     private TextColor bg;
@@ -28,10 +28,11 @@ public class Player implements Constants {
     private Sound bombPlant;
     private Sound bombExplode;
     private TextColor playerBG;
-    private double powerLevelBomb = 1;
-    private int powerLevelSpeed = 1;
-    private int lives;
 
+    private int lives;
+    private Random rand = new Random();
+
+// endregion
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
            TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
@@ -145,12 +146,10 @@ public class Player implements Constants {
         boolean hitWall = false;
         bombExplode.play();
 
-
         for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
                 map[i][j].setWalkable(true);
             }
-
         }
         // VÄNSTER
 
@@ -234,8 +233,9 @@ public class Player implements Constants {
 
     }
 
-    void deplode() {
+    void deplode() { // Todo refakturera för enkelheten
         boolean hitWall = false;
+
         // VÄNSTER
         for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
@@ -244,6 +244,7 @@ public class Player implements Constants {
                     break;
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                giveDrop(i, j);
             }
             if (hitWall) break;
         }
@@ -256,6 +257,7 @@ public class Player implements Constants {
                     break;
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                giveDrop(i, j);
             }
             if (hitWall) break;
         }
@@ -269,6 +271,7 @@ public class Player implements Constants {
                     break;
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                giveDrop(i, j);
             }
             if (hitWall) break;
         }
@@ -282,10 +285,22 @@ public class Player implements Constants {
                     break;
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+
+                giveDrop(i, j);
+
             }
             if (hitWall) break;
         }
         bombed = false;
+
+    }
+
+    private void giveDrop(int i, int j){
+        if(map[i][j].dropsBoost()){
+            map[i][j].setDropsBoost(false);
+            if(rand.nextInt(DROPCHANCE) == 1 ) new PowerUp(i, j, screen);
+
+        }
     }
 
     // region Getters/Setters

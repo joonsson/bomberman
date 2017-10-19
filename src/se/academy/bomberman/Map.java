@@ -44,22 +44,22 @@ public class Map implements Constants {
             for (int y = 0; y < rows; y++) {
                 if (x == 0 || x == columns - 1) {
                     // Set surrounding walls
-                    cells[0][y].setDestructible(false);
                     cells[0][y].setWalkable(false);
+                    cells[0][y].setDestructible(false);
                     cells[0][y].setPlaceable(false);
 
                     cells[0][y].setColor(getWallColor(cells[0][y].isDestructible()));
 
                     cells[0][y].setPlaceable(false);
-                    cells[columns - 1][y].setDestructible(false);
                     cells[columns - 1][y].setWalkable(false);
+                    cells[columns - 1][y].setDestructible(false);
                     cells[columns - 1][y]
                             .setColor(getWallColor(cells[columns - 1][y].isDestructible()));
                 } else if (y == 0 || y == rows - 1) {
 
                     cells[0][y].setPlaceable(false);
-                    cells[x][y].setDestructible(false);
                     cells[x][y].setWalkable(false);
+                    cells[x][y].setDestructible(false);
                     cells[x][y].setColor(getWallColor(cells[x][y].isDestructible()));
                 }
             }
@@ -137,9 +137,10 @@ public class Map implements Constants {
 
 class MapCell {
     private boolean walkable;
-    private boolean destructible;
+    private boolean destructible = true;
     private boolean spawnable;
     private boolean placeable = true;
+    private boolean dropsBoost = false;
     TextColor color;
 
     public boolean isPlaceable() {
@@ -158,7 +159,7 @@ class MapCell {
 
     // region Getters/Setters MAPCELLS
     void setWalkable(boolean walkable) {
-        this.walkable = walkable;
+        if(destructible) this.walkable = walkable;
     }
 
     void setColor(TextColor color) {
@@ -185,17 +186,23 @@ class MapCell {
         this.spawnable = spawnable;
     }
 
+    public boolean dropsBoost() {
+        return dropsBoost;
+    }
+
+    public void setDropsBoost(boolean dropsBoost) {
+        this.dropsBoost = dropsBoost;
+    }
+
     // endregion
 }
 
 
 /*
 
-¤|¤
-(_)
+¤ ¤
+(I)
 
-   /*
-  HHH
 
 *u*
 

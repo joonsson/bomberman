@@ -230,7 +230,6 @@ public class Bomberman implements Constants {
         }
     }
 
-
     private static void draw(MapCell[][] mapCells, Screen screen) {
 
         for (int i = 0; i < COLUMNS; i++) {
@@ -283,7 +282,6 @@ public class Bomberman implements Constants {
             }
         }
     }
-
 
     static void bombCheck(List<Player> players) {
         Player player1 = players.get(0);
