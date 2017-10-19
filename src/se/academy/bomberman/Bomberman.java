@@ -23,7 +23,8 @@ public class Bomberman implements Constants {
     private static List<Player> players;
     private static Map map;
     private static Screen screen;
-    private static Music brinstar;
+    private static Music menuMusic;
+    private static Music gameMusic;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         JFXPanel jfx = new JFXPanel();
@@ -59,8 +60,8 @@ public class Bomberman implements Constants {
         TerminalSize newSize = new TerminalSize(SCREENWIDTH, SCREENHEIGHT);
         screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
-        brinstar = new Music("src/Sounds/Brinstar.mp3");
-        //brinstar.start();
+        menuMusic = new Music("src/Sounds/Brinstar.mp3");
+        menuMusic.start();
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
@@ -69,14 +70,16 @@ public class Bomberman implements Constants {
     private static void initGame(Screen screen) {
         map = new Map(COLUMNS, ROWS); //TODO change where we draw the map and start pos
         screen.clear();
+        gameMusic = new Music("src/Sounds/TNT.mp3");
         draw(map.getCells(), screen);
+        List<PowerUp> powerUps = new ArrayList<>();
         Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
                 new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+                map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
 
         Player player2 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
         player2.setEnemy(player1);
         player1.setEnemy(player2);
 
@@ -85,10 +88,11 @@ public class Bomberman implements Constants {
 
         players.add(player1);
         players.add(player2);
+        menuMusic.mediaPlayer.pause();
+        gameMusic.start();
     }
 
     private static void gameOver(Screen screen, List<Player> players) throws IOException {
-        brinstar.mediaPlayer.pause();
         Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         screen.clear();
         screen.clear();
@@ -102,6 +106,9 @@ public class Bomberman implements Constants {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
             }
+            if (players.get(1).isSuicided()) {
+        tg.putString(50, 24, "Player2 suicided. You suck!");
+            }
         } else {
             BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
             String s = reader.readLine();
@@ -109,6 +116,9 @@ public class Bomberman implements Constants {
             while (s != null) {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
+            }
+            if (players.get(0).isSuicided()) {
+        tg.putString(50, 24, "Player1 suicided. You suck!");
             }
         }
         tg.putString(50, 28, "Press enter to play again.");
@@ -137,6 +147,7 @@ public class Bomberman implements Constants {
     }
 
     private static void endGame(Screen screen) throws IOException {
+        gameMusic.mediaPlayer.pause();
         Music endGame = new Music("src/Sounds/smb_mariodie.wav");
         endGame.start();
         screen.refresh();
@@ -290,7 +301,7 @@ public class Bomberman implements Constants {
         if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
             player1.explode();
         }
-        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 3 && !player1.getBomb().isVisible()) {
             player1.deplode();
         }
 
@@ -298,7 +309,7 @@ public class Bomberman implements Constants {
         if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
             player2.explode();
         }
-        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 3 && !player2.getBomb().isVisible()) {
             player2.deplode();
         }
     }
