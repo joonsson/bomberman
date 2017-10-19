@@ -2,6 +2,8 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
 
+import java.util.Random;
+
 public class Map implements Constants {
 
     private MapCell[][] cells;
@@ -15,7 +17,7 @@ public class Map implements Constants {
     Map(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
-        setMode(BLOCKS); // Todo menyval för gamemode
+        setMode(RANDOM); // Todo menyval för gamemode
         init();
     }
 
@@ -34,8 +36,16 @@ public class Map implements Constants {
 
     private void addSpawn() {
         new Block(SPAWN, blockSizeX, 1, this);
+        new Block(SPAWN, blockSizeX*2, 1, this);
+        new Block(SPAWN, blockSizeX, blockSizeY*2, this);
         new Block(SPAWN, columns - 1, 1, this);
+        new Block(SPAWN, columns - 1, blockSizeY*2, this);
+        new Block(SPAWN, columns - blockSizeX - 1, 1, this);
+        new Block(SPAWN, blockSizeX, (rows - 1) - blockSizeY*2, this);
+        new Block(SPAWN, blockSizeX*2, (rows - 1) - blockSizeY, this);
         new Block(SPAWN, blockSizeX, (rows - 1) - blockSizeY, this);
+        new Block(SPAWN, columns - 1, (rows - 1) - blockSizeY*2, this);
+        new Block(SPAWN, columns - blockSizeX - 1, (rows - 1) - blockSizeY, this);
         new Block(SPAWN, columns - 1, (rows - 1) - blockSizeY, this);
     }
 
@@ -83,6 +93,16 @@ public class Map implements Constants {
                 }
             }
         } else if (getMode() == RANDOM) {
+            for (int x = blockSizeX; x < columns; x = x + blockSizeX) {
+                for (int y = 1; y < rows - 1; y = y + blockSizeY) {
+                    if (Block.isPlaceable(x, y, this)) {
+                        if(new Random().nextInt(3)== 1 && !cells[x][y].isSpawnable()){
+                            new Block(BRICK, x, y, this);
+
+                        }
+                    }
+                }
+            }
             // TODO add code to place destructiblocks randomly
         }
     }
@@ -180,6 +200,10 @@ class MapCell {
 
     public TextColor getColor() {
         return color;
+    }
+
+    public boolean isSpawnable() {
+        return spawnable;
     }
 
     public void setSpawnable(boolean spawnable) {

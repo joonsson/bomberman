@@ -7,15 +7,15 @@ public interface Constants {
 
     // BOMB
     int FUSE = 1500;
-    int DROPCHANCE = 2;
+    int DROPCHANCE = 4;
 
     // MAP
     int wallThickness = 1;
     int blockSizeX = 3;
     int blockSizeY = 2;
-    int size = 9;
-    int COLUMNS = size * blockSizeX + wallThickness * 2;
-    int ROWS = size * blockSizeY + wallThickness * 2;
+    int size = 13;
+    int COLUMNS = size * blockSizeX + (wallThickness * 2);
+    int ROWS = size * blockSizeY + (wallThickness * 2);
     int SCREENWIDTH = 129;
     int SCREENHEIGHT = 49;
 
