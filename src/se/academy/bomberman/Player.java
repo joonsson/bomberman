@@ -171,7 +171,7 @@ public class Player {
         }
         hitWall = false;
         // Höger
-        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 4 * powerLevelBomb; i++) {
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
