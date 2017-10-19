@@ -91,6 +91,7 @@ public class Player implements Constants {
             }
             bomb.setStart(System.currentTimeMillis());
             bombed = true;
+            bombPlant.stopp();
             bombPlant.play();
 
         }
@@ -98,21 +99,22 @@ public class Player implements Constants {
 
     void move(int direction) {
 
-        if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
-            int x = 0;
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, new TextCharacter(bombModel[x++], playerColor, bombBG));
+        for (int m = 0; m < powerLevelSpeed; m++) {
+            if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+                int x = 0;
+                for (int i = posX; i < posX + 3; i++) {
+                    for (int j = posY; j < posY + 2; j++) {
+                        screen.setCharacter(i, j, new TextCharacter(bombModel[x++], playerColor, bombBG));
+                    }
                 }
-            }
 
-        } else {
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            } else {
+                for (int i = posX; i < posX + 3; i++) {
+                    for (int j = posY; j < posY + 2; j++) {
+                        screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                    }
                 }
             }
-        }
       /*  if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
             powerSpeed = true;
         }
@@ -122,7 +124,6 @@ public class Player implements Constants {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
-        for (int m = 0; m < powerLevelSpeed; m++) {
             switch (direction) {
                 case NORTH:
                     if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
@@ -171,6 +172,7 @@ public class Player implements Constants {
         boolean hit = false;
         boolean enemyHit = false;
         boolean hitWall = false;
+        bombExplode.stopp();
         bombExplode.play();
 
 
@@ -198,6 +200,7 @@ public class Player implements Constants {
         hitWall = false;
         // Höger
         for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
+
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
@@ -259,7 +262,6 @@ public class Player implements Constants {
         }
         bomb.setVisible(false);
         bomb.setStart(System.currentTimeMillis());
-
     }
 
     void deplode() { // Todo refakturera för enkelheten
@@ -327,7 +329,7 @@ public class Player implements Constants {
     private void giveDrop(int i, int j){
         if(map[i][j].dropsBoost()){
             map[i][j].setDropsBoost(false);
-            if(rand.nextInt(DROPCHANCE) == 1 ) new PowerUp(i, j, screen);
+            if(rand.nextInt(DROPCHANCE) == 1 ) powerUps.add(new PowerUp(i, j, screen));
 
         }
     }
