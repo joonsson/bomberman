@@ -2,86 +2,90 @@ package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
 
-public class Map {
+public class Map implements Constants {
 
     private MapCell[][] cells;
     private int rows, columns;
-    static int NORMAL = 0, BLOCKS = 1, RANDOM = 2;
     private int mode;
-    private static int blockSizeX = 3, blockSizeY = 2;
+
+    public TextColor getGroundColor() {
+        return groundColor;
+    }
 
     Map(int columns, int rows) {
         this.rows = rows;
         this.columns = columns;
-        setMode(BLOCKS);
+        setMode(BLOCKS); // Todo menyval för gamemode
         init();
     }
 
     private void init() {
+
         cells = new MapCell[columns][rows];
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < rows; j++) {
-                cells[i][j] = new MapCell();
+                cells[i][j] = new MapCell(); //
             }
         }
+        addSpawn();
+        addObstacles();
         drawMap();
     }
 
+    private void addSpawn() {
+        new Block(SPAWN, blockSizeX, 1, this);
+        new Block(SPAWN, columns - 1, 1, this);
+        new Block(SPAWN, blockSizeX, (rows - 1) - blockSizeY, this);
+        new Block(SPAWN, columns - 1, (rows - 1) - blockSizeY, this);
+    }
+
     private void drawMap() {
-        int columns = getColumns(), rows = getRows();
-        for (int i = 0; i < columns; i++) {
+        for (int x = 0; x < columns; x++) {
+            for (int y = 0; y < rows; y++) {
+                if (x == 0 || x == columns - 1) {
+                    // Set surrounding walls
+                    cells[0][y].setDestructible(false);
+                    cells[0][y].setWalkable(false);
+                    cells[0][y].setPlaceable(false);
 
-            for (int j = 0; j < rows; j++) {
+                    cells[0][y].setColor(getWallColor(cells[0][y].isDestructible()));
 
-                if (i == 0 || i == columns - 1) {
+                    cells[0][y].setPlaceable(false);
+                    cells[columns - 1][y].setDestructible(false);
+                    cells[columns - 1][y].setWalkable(false);
+                    cells[columns - 1][y]
+                            .setColor(getWallColor(cells[columns - 1][y].isDestructible()));
+                } else if (y == 0 || y == rows - 1) {
 
-                    cells[0][j].setDestructible(false);
-                    cells[0][j].setWalkable(false);
-                    cells[0][j].setColor(getWallColor(cells[0][j].isDestructible())); // TODO sätt en konstant färgvariabel
-
-                    cells[columns - 1][j].setDestructible(false);
-                    cells[columns - 1][j].setWalkable(false);
-                    cells[columns - 1][j]
-                            .setColor(getWallColor(cells[columns - 1][j].isDestructible()));
-
-                } else if (j == 0 || j == rows - 1) {
-
-                    cells[i][j].setDestructible(false);
-                    cells[i][j].setWalkable(false);
-                    cells[i][j].setColor(getWallColor(cells[i][j].isDestructible()));
-
-                } else if (i % 10 == 0 && j % 5 == 0) {
-                    drawObstacles();
+                    cells[0][y].setPlaceable(false);
+                    cells[x][y].setDestructible(false);
+                    cells[x][y].setWalkable(false);
+                    cells[x][y].setColor(getWallColor(cells[x][y].isDestructible()));
                 }
             }
         }
     }
 
-    private void drawObstacles() {
-        for (int x = blockSizeX * 2; x < getColumns(); x = x + blockSizeX * 2) {
-            for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY * 2) {
-                createBlockAt(x, y, false);
+    private void addObstacles() {
+        for (int x = blockSizeX * 2; x < columns; x = x + blockSizeX * 2) {
+            for (int y = blockSizeX; y < rows - 1; y = y + blockSizeY * 2) {
+                if (cells[x][y].isPlaceable()) {
+                    new Block(SOLID, x, y, this);
+                }
             }
         }
         if (getMode() == BLOCKS) {
-            createBlockAt(6, 1, true);
-            // TODO add code to place destructiblocks in grid
-        }else if (getMode()== RANDOM){
+            for (int x = blockSizeX; x < columns; x = x + blockSizeX * 2) {
+                for (int y = 1; y < rows - 1; y = y + blockSizeY * 2) {
+                    if (Block.isPlaceable(x, y, this)) {
+                        new Block(BRICK, x, y, this);
+                    }
+                }
+            }
+        } else if (getMode() == RANDOM) {
             // TODO add code to place destructiblocks randomly
         }
     }
-//            for (int x = blockSizeX; x < getColumns(); x = x + blockSizeX) {
-//                for (int y = blockSizeX; y < getRows() - 1; y = y + blockSizeY) {
-//                    for (int o = y; o < getColumns() + 1 && o <= y + 1; o++) {
-////                        if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
-////                            x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1){
-//                        System.out.println("creat destructible blocks");
-//                        createBlock(x, o, true);
-////                        }
-//                    }
-//                }
-//            }
-//        }
 
     private void createBlockAt(int startX, int startY, boolean destructible) {
 
@@ -94,7 +98,7 @@ public class Map {
         }
     }
 
-    private TextColor getWallColor(boolean destructible) {
+    TextColor getWallColor(boolean destructible) { // TODO sätt denna någon annan stans
         if (destructible) {
             return new TextColor.RGB(4, 100, 0);
         } else {
@@ -134,7 +138,17 @@ public class Map {
 class MapCell {
     private boolean walkable;
     private boolean destructible;
+    private boolean spawnable;
+    private boolean placeable = true;
     TextColor color;
+
+    public boolean isPlaceable() {
+        return placeable;
+    }
+
+    public void setPlaceable(boolean placeable) {
+        this.placeable = placeable;
+    }
 
     MapCell() {
         walkable = true;
@@ -167,22 +181,24 @@ class MapCell {
         return color;
     }
 
+    public void setSpawnable(boolean spawnable) {
+        this.spawnable = spawnable;
+    }
+
     // endregion
 }
 
 
 /*
-        OM cellen är 2blocks+1 från hörn, samt om cellen INTE är destructible,
-        rita ett destructibleblock
-
-        if(x - 2*blockSizeX+1 < 1 && y - blockSizeY+1 < 1||
-           x + 2*blockSizeX+1 > getColumns() && y + blockSizeY-1 > 1
-
-
 
 ¤|¤
 (_)
 
    /*
   HHH
+
+*u*
+
+
+
  */

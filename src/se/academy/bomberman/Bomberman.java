@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bomberman {
+public class Bomberman implements Constants {
 
     static protected final int NORTH = 0;
     static protected final int SOUTH = 1;

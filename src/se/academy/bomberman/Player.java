@@ -154,6 +154,7 @@ public class Player {
 
         }
         // VÄNSTER
+
         for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
                 if (!map[i][j].isDestructible()) {
@@ -296,7 +297,6 @@ public class Player {
     public void setPosX(int posX) {
         this.posX = posX;
     }
-
 
     public int getPosY() {
         return posY;
