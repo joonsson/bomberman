@@ -4,6 +4,8 @@ import com.googlecode.lanterna.TextColor;
 
 public interface Constants {
 
+    int FUSE = 3000;
+
     int size = 9;
     int COLUMNS = size*3+2;
     int SCREENWIDTH = 129;
