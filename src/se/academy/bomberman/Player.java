@@ -5,9 +5,8 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
-import java.util.Random;
 
-public class Player {
+public class Player implements Constants {
 
 
     private int posX;
@@ -24,7 +23,6 @@ public class Player {
     private TextCharacter playerModelBomb;
     private TextColor bg;
     private MapCell[][] map;
-    private final long FUSE = 3000;
     private boolean bombed;
     private boolean living;
     private Player enemy;
@@ -60,7 +58,7 @@ public class Player {
         lives = 1;
     }
 
-    void init() {
+    private void init() {
         for (int i = posX; i < posX + 3; i++) {
             for (int j = posY; j < posY + 2; j++) {
                 screen.setCharacter(i, j, playerModel);
@@ -111,30 +109,34 @@ public class Player {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
-        switch (direction) {
-            case NORTH:
-                if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
-                        map[getPosX() + 2][getPosY() - 1].isWalkable()) {
-                    setPosY(getPosY() - vSpeed * powerLevelSpeed);
-                }
-                break;
-            case SOUTH:
-                if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
-                        map[getPosX() + 2][getPosY() + 2].isWalkable()) {
-                    setPosY(getPosY() + vSpeed * powerLevelSpeed);
-                }
-                break;
-            case WEST:
-                if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() - hSpeed * powerLevelSpeed);
-                }
-                break;
-            case EAST:
-                if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() + hSpeed * powerLevelSpeed);
-                }
-                break;
-        }
+      for (int i = 0; i < powerLevelSpeed; i++) {
+          switch (direction) {
+              case NORTH:
+                  if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
+                          map[getPosX() + 2][getPosY() - 1].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() - 2 == enemy.getPosY())) {
+                      setPosY(getPosY() - vSpeed);
+                  }
+                  break;
+              case SOUTH:
+                  if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
+                          map[getPosX() + 2][getPosY() + 2].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() + 2 == enemy.getPosY())) {
+                      setPosY(getPosY() + vSpeed);
+                  }
+                  break;
+              case WEST:
+                  if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
+                          !(getPosX() - 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                      setPosX(getPosX() - hSpeed);
+                  }
+                  break;
+              case EAST:
+                  if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
+                          !(getPosX() + 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                      setPosX(getPosX() + hSpeed);
+                  }
+                  break;
+          }
+      }
         for (int i = posX; i < posX + 3; i++) {
             for (int j = posY; j < posY + 2; j++) {
                 screen.setCharacter(i, j, playerModel);
@@ -149,7 +151,7 @@ public class Player {
         bombExplode.play();
 
 
-        for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
+        for (int i = bomb.getPosX(); i < bomb.getPosY() + 2; i++) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
                 map[i][j].setWalkable(true);
             }
@@ -292,23 +294,23 @@ public class Player {
     }
 
     // region Getters/Setters
-    public int getPosX() {
+    private int getPosX() {
         return posX;
     }
 
-    public void setPosX(int posX) {
+    private void setPosX(int posX) {
         this.posX = posX;
     }
 
-    public int getPosY() {
+    private int getPosY() {
         return posY;
     }
 
-    public void setPosY(int posY) {
+    private void setPosY(int posY) {
         this.posY = posY;
     }
 
-    public boolean isLiving() {
+    boolean isLiving() {
         return living;
     }
 
@@ -316,11 +318,11 @@ public class Player {
         this.living = alive;
     }
 
-    public boolean hasBombed() {
+    boolean hasBombed() {
         return bombed;
     }
 
-    public long getFUSE() {
+    long getFUSE() {
         return FUSE;
     }
 
@@ -332,7 +334,7 @@ public class Player {
         return enemy;
     }
 
-    public void setEnemy(Player enemy) {
+    void setEnemy(Player enemy) {
         this.enemy = enemy;
     }
 
@@ -352,7 +354,7 @@ public class Player {
         this.hSpeed = hSpeed;
     }
 
-    public Bomb getBomb() {
+    Bomb getBomb() {
         return bomb;
     }
 
@@ -360,27 +362,27 @@ public class Player {
         this.bomb = bomb;
     }
 
-    public int getLives() {
+    int getLives() {
         return lives;
     }
 
-    public void setLives(int lives) {
+    void setLives(int lives) {
         this.lives = lives;
     }
 
-    public double getPowerLevelBomb() {
+    double getPowerLevelBomb() {
         return powerLevelBomb;
     }
 
-    public void setPowerLevelBomb(double powerLevelBomb) {
+    void setPowerLevelBomb(double powerLevelBomb) {
         this.powerLevelBomb = powerLevelBomb;
     }
 
-    public int getPowerLevelSpeed() {
+    int getPowerLevelSpeed() {
         return powerLevelSpeed;
     }
 
-    public void setPowerLevelSpeed(int powerLevelSpeed) {
+    void setPowerLevelSpeed(int powerLevelSpeed) {
         this.powerLevelSpeed = powerLevelSpeed;
     }
     //endregion

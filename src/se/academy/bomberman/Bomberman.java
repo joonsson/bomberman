@@ -23,7 +23,8 @@ public class Bomberman implements Constants {
     private static List<Player> players;
     private static Map map;
     private static Screen screen;
-    private static Music brinstar;
+    private static Music menuMusic;
+    private static Music gameMusic;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         JFXPanel jfx = new JFXPanel();
@@ -59,8 +60,8 @@ public class Bomberman implements Constants {
         TerminalSize newSize = new TerminalSize(SCREENWIDTH, SCREENHEIGHT);
         screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
-        brinstar = new Music("src/Sounds/Brinstar.mp3");
-        //brinstar.start();
+        menuMusic = new Music("src/Sounds/Brinstar.mp3");
+        menuMusic.start();
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
@@ -69,6 +70,7 @@ public class Bomberman implements Constants {
     private static void initGame(Screen screen) {
         map = new Map(COLUMNS, ROWS); //TODO change where we draw the map and start pos
         screen.clear();
+        gameMusic = new Music("src/Sounds/TNT.mp3");
         draw(map.getCells(), screen);
         Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
                 new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
@@ -85,10 +87,11 @@ public class Bomberman implements Constants {
 
         players.add(player1);
         players.add(player2);
+        menuMusic.mediaPlayer.pause();
+        gameMusic.start();
     }
 
     private static void gameOver(Screen screen, List<Player> players) throws IOException {
-        brinstar.mediaPlayer.pause();
         Music gameOver = new Music("src/Sounds/smb_gameover.wav");
         screen.clear();
         screen.clear();
@@ -137,6 +140,7 @@ public class Bomberman implements Constants {
     }
 
     private static void endGame(Screen screen) throws IOException {
+        gameMusic.mediaPlayer.pause();
         Music endGame = new Music("src/Sounds/smb_mariodie.wav");
         endGame.start();
         screen.refresh();
@@ -292,7 +296,7 @@ public class Bomberman implements Constants {
         if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
             player1.explode();
         }
-        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 3 && !player1.getBomb().isVisible()) {
             player1.deplode();
         }
 
@@ -300,7 +304,7 @@ public class Bomberman implements Constants {
         if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
             player2.explode();
         }
-        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 3 && !player2.getBomb().isVisible()) {
             player2.deplode();
         }
     }
