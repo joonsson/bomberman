@@ -74,11 +74,11 @@ public class Bomberman implements Constants {
         gameMusic = new Music("src/Sounds/TNT.mp3");
         draw(map.getCells(), screen);
         List<PowerUp> powerUps = new ArrayList<>();
-        Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
+        Player player1 = new Player(BJSTARTX, BJSTARTY, playerModel1, new TextColor.RGB(180, 10, 140),
                 new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
 
-        Player player2 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
+        Player player2 = new Player(BHSTARTX, BHSTARTY, playerModel2, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
         player2.setEnemy(player1);
