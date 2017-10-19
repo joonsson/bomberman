@@ -91,20 +91,21 @@ public class Player implements Constants {
     }
 
     void move(int direction) {
-        if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, bomb.getModel());
+        for (int m = 0; m < powerLevelSpeed; m++) {
+            if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+                for (int i = posX; i < posX + 3; i++) {
+                    for (int j = posY; j < posY + 2; j++) {
+                        screen.setCharacter(i, j, bomb.getModel());
+                    }
                 }
-            }
 
-        } else {
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+            } else {
+                for (int i = posX; i < posX + 3; i++) {
+                    for (int j = posY; j < posY + 2; j++) {
+                        screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                    }
                 }
             }
-        }
       /*  if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
             powerSpeed = true;
         }
@@ -114,7 +115,6 @@ public class Player implements Constants {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
-        for (int m = 0; m < powerLevelSpeed; m++) {
             switch (direction) {
                 case NORTH:
                     if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
@@ -319,7 +319,7 @@ public class Player implements Constants {
     private void giveDrop(int i, int j){
         if(map[i][j].dropsBoost()){
             map[i][j].setDropsBoost(false);
-            if(rand.nextInt(DROPCHANCE) == 1 ) new PowerUp(i, j, screen);
+            if(rand.nextInt(DROPCHANCE) == 1 ) powerUps.add(new PowerUp(i, j, screen));
 
         }
     }

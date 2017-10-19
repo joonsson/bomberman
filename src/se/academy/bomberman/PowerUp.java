@@ -20,6 +20,7 @@ public class PowerUp {
 
 
 
+
     public PowerUp(int x, int y, Screen screen) {
         Random rand = new Random();
         this.posX = x;
@@ -42,14 +43,16 @@ public class PowerUp {
 
             case LIVE:
                 Sound oneUp = new Sound("src/Sounds/smb_1-up.wav");
-                player.setLives(player.getLives()+1);
                 oneUp.start();
+                player.setLives(player.getLives()+1);
+                oneUp.mediaPlayer.play();
                 break;
 
             case SPEED:
                 Sound speed = new Sound("src/Sounds/gotta go fast.wav");
-                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
                 speed.start();
+                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
+                speed.mediaPlayer.play();
                 break;
 
             case BOMB:
@@ -73,7 +76,6 @@ public class PowerUp {
                 case 1:
                     TextCharacter life = new TextCharacter('L', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, life);
-
                     break;
 
                 case 2:
