@@ -310,6 +310,7 @@ public class Bomberman {
             player1.deplode();
         }
 
+
         if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
             player2.explode();
         }
