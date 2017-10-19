@@ -11,23 +11,16 @@ public class PowerUp {
     private int posX = 10;
     private int posY = 10;
     private Screen screen;
-    private int death;
-    private int life;
+
     private int dead = 0, alive = 1, speedish = 2, bomber = 3;
     private int konst;
-    private TextCharacter bombs = new TextCharacter('B');
-    private TextCharacter speedigonzales = new TextCharacter('S');
     private Player player;
-
 
     public PowerUp(int x, int y, int type, Screen screen) {
         this.posX = x;
         this.posY = y;
         this.konst = type;
-
-
     }
-
     // region Getters/setters
 
     public int getPosY() {
@@ -77,7 +70,7 @@ public class PowerUp {
 
     public void drawPowerUp(Screen screen, int x, int y, int randomSpawn) {
 
-        konst = randomSpawn;
+        konst
         if (konst>=0 && konst<4) {
             switch (konst) {
                 case 0:
