@@ -5,6 +5,8 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
+import java.util.List;
+
 public class Player implements Constants {
 
 
@@ -31,6 +33,7 @@ public class Player implements Constants {
     private double powerLevelBomb = 1;
     private int powerLevelSpeed = 1;
     private int lives;
+    private List<PowerUp> powerUps;
 
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
@@ -108,37 +111,46 @@ public class Player implements Constants {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
-      for (int i = 0; i < powerLevelSpeed; i++) {
-          switch (direction) {
-              case NORTH:
-                  if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
-                          map[getPosX() + 2][getPosY() - 1].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() - 2 == enemy.getPosY())) {
-                      setPosY(getPosY() - vSpeed);
-                  }
-                  break;
-              case SOUTH:
-                  if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
-                          map[getPosX() + 2][getPosY() + 2].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() + 2 == enemy.getPosY())) {
-                      setPosY(getPosY() + vSpeed);
-                  }
-                  break;
-              case WEST:
-                  if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
-                          !(getPosX() - 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
-                      setPosX(getPosX() - hSpeed);
-                  }
-                  break;
-              case EAST:
-                  if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
-                          !(getPosX() + 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
-                      setPosX(getPosX() + hSpeed);
-                  }
-                  break;
-          }
-      }
-        for (int i = posX; i < posX + 3; i++) {
-            for (int j = posY; j < posY + 2; j++) {
-                screen.setCharacter(i, j, playerModel);
+        for (int m = 0; m < powerLevelSpeed; m++) {
+            switch (direction) {
+                case NORTH:
+                    if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
+                            map[getPosX() + 2][getPosY() - 1].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() - 2 == enemy.getPosY())) {
+                        setPosY(getPosY() - vSpeed);
+                    }
+                    break;
+                case SOUTH:
+                    if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
+                            map[getPosX() + 2][getPosY() + 2].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() + 2 == enemy.getPosY())) {
+                        setPosY(getPosY() + vSpeed);
+                    }
+                    break;
+                case WEST:
+                    if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
+                            !(getPosX() - 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                        setPosX(getPosX() - hSpeed);
+                    }
+                    break;
+                case EAST:
+                    if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
+                            !(getPosX() + 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                        setPosX(getPosX() + hSpeed);
+                    }
+                    break;
+            }
+            if (!powerUps.isEmpty()) {
+                for (int n = powerUps.size() - 1; n >= 0; n--) {
+                    PowerUp p = powerUps.get(n);
+                    if (getPosX() == p.getPosX() && getPosY() == p.getPosY()) {
+                        p.walkedOnMe(this);
+                        powerUps.remove(n);
+                    }
+                }
+            }
+            for (int i = posX; i < posX + 3; i++) {
+                for (int j = posY; j < posY + 2; j++) {
+                    screen.setCharacter(i, j, playerModel);
+                }
             }
         }
     }
