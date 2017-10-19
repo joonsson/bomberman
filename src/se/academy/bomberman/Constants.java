@@ -1,6 +1,7 @@
 package se.academy.bomberman;
 
 import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextImage;
 
 public interface Constants {
 
@@ -28,4 +29,6 @@ public interface Constants {
     TextColor p2spawnColor = new TextColor.RGB(55, 55, 10);
     TextColor p3spawnColor = new TextColor.RGB(55, 55, 10);
     TextColor p4spawnColor = new TextColor.RGB(55, 55, 10);
+
+   
 }

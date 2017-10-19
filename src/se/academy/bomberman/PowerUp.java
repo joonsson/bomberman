@@ -36,7 +36,6 @@ public class PowerUp implements Constants {
 
     }
 
-
     public void walkedOnMe(Player player){
         used = true;
         switch (konst) {
