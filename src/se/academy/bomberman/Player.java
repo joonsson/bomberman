@@ -29,7 +29,7 @@ public class Player {
     private Sound bombPlant;
     private Sound bombExplode;
     private TextColor playerBG;
-    private double powerLevelBomb = 2;
+    private double powerLevelBomb = 1;
     private int powerLevelSpeed = 1;
     private int lives;
 
