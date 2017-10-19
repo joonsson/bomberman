@@ -70,23 +70,23 @@ public class PowerUp implements Constants {
         if (konst>=0 && konst<4) {
             switch (konst) {
                 case 0:
-                    TextCharacter deaths = new TextCharacter('D', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
+                    TextCharacter deaths = new TextCharacter('D', new TextColor.RGB(0, 250, 0), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, deaths);
                     break;
 
                 case 1:
-                    TextCharacter life = new TextCharacter('L', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
+                    TextCharacter life = new TextCharacter('L', new TextColor.RGB(250, 250, 250), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, life);
 
                     break;
 
                 case 2:
-                    TextCharacter speeds = new TextCharacter('S', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
+                    TextCharacter speeds = new TextCharacter('S', new TextColor.RGB(250, 0, 0), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, speeds);
                     break;
 
                 case 3:
-                    TextCharacter bomber = new TextCharacter('B', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
+                    TextCharacter bomber = new TextCharacter('B', new TextColor.RGB(0,0,250), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, bomber);
                     break;
                 default:
