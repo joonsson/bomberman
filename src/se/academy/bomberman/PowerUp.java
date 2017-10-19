@@ -16,7 +16,6 @@ public class PowerUp implements Constants {
     private Player player;
     private boolean used;
 
-
     public PowerUp(int x, int y, Screen screen) {
         Random rand = new Random();
         this.posX = x;
@@ -46,14 +45,16 @@ public class PowerUp implements Constants {
 
             case LIVE:
                 Sound oneUp = new Sound("src/Sounds/smb_1-up.wav");
-                player.setLives(player.getLives()+1);
                 oneUp.start();
+                player.setLives(player.getLives()+1);
+                oneUp.mediaPlayer.play();
                 break;
 
             case SPEED:
                 Sound speed = new Sound("src/Sounds/gotta go fast.wav");
-                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
                 speed.start();
+                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
+                speed.mediaPlayer.play();
                 break;
 
             case BOMB:
@@ -77,7 +78,6 @@ public class PowerUp implements Constants {
                 case 1:
                     TextCharacter life = new TextCharacter('L', new TextColor.RGB(250, 250, 250), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, life);
-
                     break;
 
                 case 2:

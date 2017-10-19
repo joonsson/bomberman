@@ -90,7 +90,9 @@ public class Bomberman implements Constants {
         players.add(player1);
         players.add(player2);
         menuMusic.mediaPlayer.pause();
-        gameMusic.start();
+        //gameMusic.start();
+        gameMusic.mediaPlayer.setVolume(0.3);
+
     }
 
     private static void gameOver(Screen screen, List<Player> players) throws IOException {
@@ -108,7 +110,14 @@ public class Bomberman implements Constants {
                 s = reader.readLine();
             }
             if (players.get(1).isSuicided()) {
-        tg.putString(50, 24, "Player2 suicided. You suck!");
+        tg.putString(55, 18, "Player2 suicided.");
+                reader = new BufferedReader(new FileReader(new File("src/Text/usuck.txt")));
+                s = reader.readLine();
+                n = 20;
+                while (s != null) {
+                    tg.putString(25, n++, s);
+                    s = reader.readLine();
+                }
             }
         } else {
             BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
@@ -119,7 +128,14 @@ public class Bomberman implements Constants {
                 s = reader.readLine();
             }
             if (players.get(0).isSuicided()) {
-        tg.putString(50, 24, "Player1 suicided. You suck!");
+        tg.putString(55, 18, "Player1 suicided.");
+                reader = new BufferedReader(new FileReader(new File("src/Text/usuck.txt")));
+                s = reader.readLine();
+                n = 20;
+                while (s != null) {
+                    tg.putString(25, n++, s);
+                    s = reader.readLine();
+                }
             }
         }
         tg.putString(50, 28, "Press enter to play again.");
