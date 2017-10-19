@@ -156,7 +156,7 @@ public class Player {
         // VÄNSTER
 
         for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
-            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -172,7 +172,8 @@ public class Player {
         hitWall = false;
         // Höger
         for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
-            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
+
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -188,7 +189,7 @@ public class Player {
 
         //Uppåt
         for (int j = bomb.getPosY(); j >= bomb.getPosY() - 2 * powerLevelBomb; j--) {
-            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -204,7 +205,7 @@ public class Player {
 
         // NERÅT
         for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
-            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -238,8 +239,8 @@ public class Player {
     void deplode() {
         boolean hitWall = false;
         // VÄNSTER
-        for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
-            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+        for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -250,8 +251,8 @@ public class Player {
         }
         hitWall = false;
         // Höger
-        for (int i = bomb.getPosX(); i < bomb.getPosX() + 9; i++) {
-            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -263,8 +264,8 @@ public class Player {
         hitWall = false;
 
         //Uppåt
-        for (int j = bomb.getPosY(); j > bomb.getPosY() - 5; j--) {
-            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+        for (int j = bomb.getPosY(); j >= bomb.getPosY() - 2 * powerLevelBomb; j--) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -276,8 +277,8 @@ public class Player {
         hitWall = false;
 
         // NERÅT
-        for (int j = bomb.getPosY(); j < bomb.getPosY() + 6; j++) {
-            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
