@@ -37,7 +37,7 @@ public class Player implements Constants {
 
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
-           TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map) {
+           TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map, List<PowerUp> powerUps) {
 
         this.bg = bg;
         this.playerBG = playerBG;
@@ -58,6 +58,7 @@ public class Player implements Constants {
         bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
         bombExplode.start();
         lives = 1;
+        this.powerUps = powerUps;
     }
 
     private void init() {
