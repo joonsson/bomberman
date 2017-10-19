@@ -81,12 +81,12 @@ public class Bomberman implements Constants {
         Player player2 = new Player(BHSTARTX, BHSTARTY, playerModel2, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-        Player player3 = new Player(BHSTARTX, BHSTARTY, playerModel3, new TextColor.RGB(0, 100, 200),
+        /*Player player3 = new Player(BHSTARTX, BHSTARTY, playerModel3, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
         Player player4 = new Player(BHSTARTX, BHSTARTY, playerModel4, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);*/
         player2.setEnemy(player1);
         player1.setEnemy(player2);
 
@@ -95,12 +95,12 @@ public class Bomberman implements Constants {
 
         players.add(player1);
         players.add(player2);
-        players.add(player3);
-        players.add(player4);
+        /*players.add(player3);
+        players.add(player4);*/
         player1.setPlayers(players);
         player2.setPlayers(players);
-        player3.setPlayers(players);
-        player4.setPlayers(players);
+        /*player3.setPlayers(players);
+        player4.setPlayers(players);*/
         menuMusic.mediaPlayer.pause();
     }
 
@@ -173,7 +173,6 @@ public class Bomberman implements Constants {
     }
 
     private static void endGame(Screen screen) throws IOException {
-        gameMusic.mediaPlayer.pause();
         Music endGame = new Music("src/Sounds/smb_mariodie.wav");
         endGame.start();
         screen.refresh();
