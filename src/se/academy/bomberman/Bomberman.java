@@ -55,6 +55,7 @@ public class Bomberman {
         player2.setEnemy(player1);
         player1.setEnemy(player2);
 
+
         List<Player> players = new ArrayList<>();
 
         players.add(player1);

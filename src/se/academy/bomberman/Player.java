@@ -29,6 +29,13 @@ public class Player {
     protected Sound bombPlant;
     protected Sound bombExplode;
     protected TextColor playerBG;
+    protected PowerUp powerUp = new PowerUp(20,20);
+    protected double powerLevelBomb=2;
+    protected int powerLevelSpeed=1;
+    protected boolean powerSpeed;
+    protected boolean powerBombs;
+
+
 
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
@@ -80,9 +87,7 @@ public class Player {
             bombPlant.play();
 
         }
-
     }
-
     protected void move(int direction) {
         if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
             for (int i = posX; i < posX + 3; i++) {
@@ -98,27 +103,37 @@ public class Player {
                 }
             }
         }
+        if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
+            powerSpeed = true;
+            powerUp.drawBombs();
+        }
+//        if (powerUp.getPosX()==getPosX() &&  powerUp.getPosY()==getPosY()){
+//            powerBombs = true;
+//        }
+        if (powerSpeed){
+            powerLevelSpeed =powerUp.getSpeed();
+        }
         switch (direction) {
             case NORTH:
                 if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
                         map[getPosX() + 2][getPosY() - 1].isWalkable()) {
-                    setPosY(getPosY() - vSpeed);
+                    setPosY(getPosY() - vSpeed*powerLevelSpeed);
                 }
                 break;
             case SOUTH:
                 if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
                         map[getPosX() + 2][getPosY() + 2].isWalkable()) {
-                    setPosY(getPosY() + vSpeed);
+                    setPosY(getPosY() + vSpeed*powerLevelSpeed);
                 }
                 break;
             case WEST:
                 if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() - hSpeed);
+                    setPosX(getPosX() - hSpeed*powerLevelSpeed);
                 }
                 break;
             case EAST:
                 if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() + hSpeed);
+                    setPosX(getPosX() + hSpeed*powerLevelSpeed);
                 }
                 break;
         }
@@ -135,9 +150,14 @@ public class Player {
         boolean enemyHit = false;
         boolean hitWall = false;
         bombExplode.play();
+
+
+        if(powerBombs ){ // HOW WILL I IMPLEMENT THIS POWERUP?
+            powerLevelBomb = powerUp.getBiggerBombs();
+        }
         // VÄNSTER
-        for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
-            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+        for (int i = bomb.getPosX(); i >= bomb.getPosX()-3*powerLevelBomb; i--) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1*powerLevelBomb; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -150,8 +170,8 @@ public class Player {
         }
         hitWall = false;
         // Höger
-        for (int i = bomb.getPosX(); i < bomb.getPosX() + 9; i++) {
-            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 4*powerLevelBomb; i++) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1*powerLevelBomb; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -164,8 +184,8 @@ public class Player {
         hitWall = false;
 
         //Uppåt
-        for (int j = bomb.getPosY(); j > bomb.getPosY() - 5; j--) {
-            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+        for (int j = bomb.getPosY(); j >= bomb.getPosY() - 2*powerLevelBomb; j--) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1*powerLevelBomb; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
@@ -179,8 +199,8 @@ public class Player {
         hitWall = false;
 
         // NERÅT
-        for (int j = bomb.getPosY(); j < bomb.getPosY() + 6; j++) {
-            for (int i = bomb.getPosX(); i < bomb.getPosX() + 3; i++) {
+        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3*powerLevelBomb; j++) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1*powerLevelBomb; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
