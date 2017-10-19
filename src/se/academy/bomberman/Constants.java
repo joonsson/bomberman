@@ -4,10 +4,10 @@ import com.googlecode.lanterna.TextColor;
 
 public interface Constants {
 
-
-    int COLUMNS = 29;
+    int size = 9;
+    int COLUMNS = size*3+2;
     int SCREENWIDTH = 129;
-    int ROWS = 20;
+    int ROWS = size*2+2;
     int SCREENHEIGHT = 49;
     int BJSTARTX = 1;
     int BHSTARTX = COLUMNS-4;
