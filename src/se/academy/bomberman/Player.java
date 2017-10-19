@@ -34,6 +34,7 @@ public class Player implements Constants {
     private int powerLevelSpeed = 1;
     private int lives;
     private List<PowerUp> powerUps;
+    private boolean suicided = false;
 
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
@@ -237,6 +238,7 @@ public class Player implements Constants {
             lives--;
             if (lives == 0) {
                 living = false;
+                suicided = true;
                 Bomberman.inGame = false;
             }
         } else if (enemyHit) {
@@ -396,6 +398,14 @@ public class Player implements Constants {
 
     void setPowerLevelSpeed(int powerLevelSpeed) {
         this.powerLevelSpeed = powerLevelSpeed;
+    }
+
+    public boolean isSuicided() {
+        return suicided;
+    }
+
+    public void setSuicided(boolean suicided) {
+        this.suicided = suicided;
     }
     //endregion
 }
