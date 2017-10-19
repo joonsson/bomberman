@@ -28,28 +28,145 @@ public class Bomberman implements Constants {
     private static final int ROWS = 20;
     private static final int SCREENHEIGHT = 49;
     private static final int BJSTARTX = 1;
-    private static final int BHSTARTX = COLUMNS-4;
+    private static final int BHSTARTX = COLUMNS - 4;
     private static final int BJSTARTY = 1;
-    private static final int BHSTARTY = ROWS-3;
+    private static final int BHSTARTY = ROWS - 3;
     private static final long DELTAT = 16;
     public static boolean inGame = true;
+    private static boolean playing;
+    private static List<Player> players;
+    private static Map map;
+    private static Screen screen;
+    private static Music brinstar;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         JFXPanel jfx = new JFXPanel();
 
-        Map map = new Map(COLUMNS, ROWS); //TODO change where we draw the map and start pos
+        init();
+        while (playing) {
+            initGame(screen);
+            do {
+                long delay = System.currentTimeMillis();
+                screen.refresh();
 
+                bombCheck(players); // TODO walkable igen
+                keyCheck(screen.pollInput(), players);
 
-        TerminalSize newSize = new TerminalSize(SCREENWIDTH,SCREENHEIGHT);
-        Screen screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
+                delay = System.currentTimeMillis() - delay;
+                delay = DELTAT - delay;
+                if (delay < 0) {
+                    delay = DELTAT;
+                }
+                try {
+                    Thread.sleep(delay);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            } while (inGame);
+            endGame(screen);
+            gameOver(screen, players);
+        }
+    }
+
+    private static void init() throws IOException {
+        TerminalSize newSize = new TerminalSize(SCREENWIDTH, SCREENHEIGHT);
+        screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
-        Music brinstar = new Music("src/Sounds/Brinstar.mp3");
+        brinstar = new Music("src/Sounds/Brinstar.mp3");
         //brinstar.start();
         screen.setCursorPosition(null);
+        mainMenu(screen);
+        playing = true;
+    }
+
+    private static void initGame(Screen screen) {
+        map = new Map(COLUMNS, ROWS); //TODO change where we draw the map and start pos
+        screen.clear();
+        draw(map.getCells(), screen);
+        Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
+                new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
+                map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+
+        Player player2 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
+                new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
+                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
+        player2.setEnemy(player1);
+        player1.setEnemy(player2);
+
+
+        players = new ArrayList<>();
+
+        players.add(player1);
+        players.add(player2);
+    }
+
+    private static void gameOver(Screen screen, List<Player> players) throws IOException {
+        brinstar.mediaPlayer.pause();
+        Music gameOver = new Music("src/Sounds/smb_gameover.wav");
+        screen.clear();
+        screen.clear();
+        TextGraphics tg = screen.newTextGraphics();
+        gameOver.start();
+        if (players.get(0).isLiving()) {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p1win.txt")));
+            String s = reader.readLine();
+            int n = 10;
+            while (s != null) {
+                tg.putString(2, n++, s);
+                s = reader.readLine();
+            }
+        } else {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
+            String s = reader.readLine();
+            int n = 10;
+            while (s != null) {
+                tg.putString(2, n++, s);
+                s = reader.readLine();
+            }
+        }
+        tg.putString(50, 28, "Press enter to play again.");
+        tg.putString(50, 30, "Press escape to exit.");
+
+        screen.refresh();
+        KeyStroke key;
+        boolean menu = true;
+        while (menu) {
+            key = screen.pollInput();
+            if (key != null) {
+                switch (key.getKeyType()) {
+                    case Enter:
+                        gameOver.mediaPlayer.pause();
+                        menu = false;
+                        inGame = true;
+                        break;
+                    case Escape:
+                        screen.close();
+                        playing = false;
+                        System.exit(0);
+                        break;
+                }
+            }
+        }
+    }
+
+    private static void endGame(Screen screen) throws IOException {
+        Music endGame = new Music("src/Sounds/smb_mariodie.wav");
+        endGame.start();
+        screen.refresh();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        endGame.mediaPlayer.pause();
+    }
+
+    private static void mainMenu(Screen screen) throws IOException {
         boolean menu = true;
         boolean start = true;
         TextGraphics tg = screen.newTextGraphics();
-        while(menu) {
+        while (menu) {
             screen.clear();
             BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/title.txt")));
             String s = reader.readLine();
@@ -125,91 +242,8 @@ public class Bomberman implements Constants {
                 }
             }
         }
-        do {
-            screen.clear();
-            draw(map.getCells(), screen);
-
-            Player player1 = new Player(BJSTARTX, BJSTARTY, 'J', new TextColor.RGB(180, 10, 140),
-                    new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
-                    map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
-
-            Player player2 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
-                    new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                    map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells());
-            player2.setEnemy(player1);
-            player1.setEnemy(player2);
-
-            List<Player> players = new ArrayList<>();
-
-            players.add(player1);
-            players.add(player2);
-
-            do {
-                long delay = System.currentTimeMillis();
-                screen.refresh();
-
-                bombCheck(players); // TODO walkable igen
-                keyCheck(screen.pollInput(), players);
-
-                delay = System.currentTimeMillis() - delay;
-                delay = DELTAT - delay;
-                if (delay < 0) {
-                    delay = DELTAT;
-                }
-                try {
-                    Thread.sleep(delay);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            } while (inGame);
-            Music endGame = new Music("src/Sounds/smb_mariodie.wav");
-            endGame.start();
-            screen.refresh();
-            Music gameOver = new Music("src/Sounds/smb_gameover.wav");
-            Thread.sleep(3000);
-            screen.clear();
-            tg = screen.newTextGraphics();
-            gameOver.start();
-            if (player1.isLiving()) {
-                BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p1win.txt")));
-                String s = reader.readLine();
-                int n = 10;
-                while (s != null) {
-                    tg.putString(2, n++, s);
-                    s = reader.readLine();
-                }
-            } else {
-                BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
-                String s = reader.readLine();
-                int n = 10;
-                while (s != null) {
-                    tg.putString(2, n++, s);
-                    s = reader.readLine();
-                }
-            }
-            tg.putString(50, 28, "Press enter to play again.");
-            tg.putString(50, 30, "Press escape to exit.");
-            screen.refresh();
-            KeyStroke key;
-            menu = true;
-            while (menu) {
-                key = screen.pollInput();
-                if (key != null) {
-                    switch (key.getKeyType()) {
-                        case Enter:
-                            menu = false;
-                            inGame = true;
-                            break;
-                        case Escape:
-                            screen.close();
-                            System.exit(0);
-                            break;
-                    }
-                }
-            }
-        }while (true) ;
     }
+
 
     private static void draw(MapCell[][] mapCells, Screen screen) {
 
@@ -269,17 +303,18 @@ public class Bomberman implements Constants {
         Player player1 = players.get(0);
         Player player2 = players.get(1);
 
-        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE && player1.bomb.isVisible()) {
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
             player1.explode();
         }
-        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE/4 && !player1.bomb.isVisible()) {
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
             player1.deplode();
         }
 
-        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
+
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
             player2.explode();
         }
-        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE/4 && !player2.bomb.isVisible()) {
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
             player2.deplode();
         }
     }
