@@ -34,6 +34,7 @@ public class Player implements Constants {
     private Random rand = new Random();
     private List<PowerUp> powerUps;
     private boolean suicided = false;
+    private List<Player> players;
 
 // endregion
 
@@ -60,6 +61,7 @@ public class Player implements Constants {
         bombExplode.start();
         lives = 1;
         this.powerUps = powerUps;
+
     }
 
     private void init() {
@@ -115,28 +117,52 @@ public class Player implements Constants {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
+            boolean playerCollision = false;
             switch (direction) {
                 case NORTH:
+                    for (Player p: players) {
+                        if (getPosX() == p.getPosX() && getPosY() - 2 == p.getPosY()) {
+                            playerCollision = true;
+                        }
+                    }
                     if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
-                            map[getPosX() + 2][getPosY() - 1].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() - 2 == enemy.getPosY())) {
+                            map[getPosX() + 2][getPosY() - 1].isWalkable() && !playerCollision) {
                         setPosY(getPosY() - vSpeed);
                     }
                     break;
                 case SOUTH:
+                    playerCollision = false;
+                    for (Player p: players) {
+                        if (getPosX() == p.getPosX() && getPosY() + 2 == p.getPosY()) {
+                            playerCollision = true;
+                        }
+                    }
                     if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
-                            map[getPosX() + 2][getPosY() + 2].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() + 2 == enemy.getPosY())) {
+                            map[getPosX() + 2][getPosY() + 2].isWalkable() && !playerCollision) {
                         setPosY(getPosY() + vSpeed);
                     }
                     break;
                 case WEST:
+                    playerCollision = false;
+                    for (Player p: players) {
+                        if (getPosX() - 3 == p.getPosX() && getPosY() == p.getPosY()) {
+                            playerCollision = true;
+                        }
+                    }
                     if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
-                            !(getPosX() - 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                            !playerCollision) {
                         setPosX(getPosX() - hSpeed);
                     }
                     break;
                 case EAST:
+                    playerCollision = false;
+                    for (Player p: players) {
+                        if (getPosX() + 3 == p.getPosX() && getPosY() == p.getPosY()) {
+                            playerCollision = true;
+                        }
+                    }
                     if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
-                            !(getPosX() + 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                            !playerCollision) {
                         setPosX(getPosX() + hSpeed);
                     }
                     break;
@@ -189,7 +215,7 @@ public class Player implements Constants {
         }
         hitWall = false;
         // Höger
-        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2 + (3 * powerLevelBomb); i++) {
 
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
@@ -222,7 +248,7 @@ public class Player implements Constants {
         hitWall = false;
 
         // NERÅT
-        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
+        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 + (2 * powerLevelBomb); j++) {
             for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
@@ -271,7 +297,7 @@ public class Player implements Constants {
         }
         hitWall = false;
         // Höger
-        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 5 * powerLevelBomb; i++) {
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2 + (3 * powerLevelBomb); i++) {
             for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1; j++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
@@ -299,7 +325,7 @@ public class Player implements Constants {
         hitWall = false;
 
         // NERÅT
-        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
+        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 + (2 * powerLevelBomb); j++) {
             for (int i = bomb.getPosX(); i <= bomb.getPosX() + 2; i++) {
                 if (!map[i][j].isDestructible()) {
                     hitWall = true;
@@ -423,6 +449,22 @@ public class Player implements Constants {
 
     public void setSuicided(boolean suicided) {
         this.suicided = suicided;
+    }
+
+    public List<PowerUp> getPowerUps() {
+        return powerUps;
+    }
+
+    public void setPowerUps(List<PowerUp> powerUps) {
+        this.powerUps = powerUps;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
     }
     //endregion
 }
