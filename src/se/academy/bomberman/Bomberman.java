@@ -203,7 +203,7 @@ public class Bomberman {
         gameOver.start();
 
         screen.clear();
-        TextGraphics tg = screen.newTextGraphics();
+        tg = screen.newTextGraphics();
         if (player1.isLiving()) {
             tg.putString(6, 8, "Player1 wins!");
             tg.putString(6, 12, "Player2 sucks!");
@@ -211,31 +211,30 @@ public class Bomberman {
             tg.putString(6, 8, "Player2 wins!");
             tg.putString(6, 12, "Player1 sucks!");
         }
-        try {
 
-            tg.putString(50, 28, "Press enter to play again.");
-            tg.putString(50, 30, "Press escape to exit.");
+        tg.putString(50, 28, "Press enter to play again.");
+        tg.putString(50, 30, "Press escape to exit.");
 
-            screen.refresh();
-            KeyStroke key;
-            menu = true;
-            while (menu) {
-                key = screen.pollInput();
-                if (key != null) {
-                    switch (key.getKeyType()) {
-                        case Enter:
-                            menu = false;
-                            inGame = true;
-                            break;
-                        case Escape:
-                            screen.close();
-                            System.exit(0);
-                            break;
-                    }
+        screen.refresh();
+        KeyStroke key;
+        menu = true;
+        while (menu) {
+            key = screen.pollInput();
+            if (key != null) {
+                switch (key.getKeyType()) {
+                    case Enter:
+                        menu = false;
+                        inGame = true;
+                        break;
+                    case Escape:
+                        screen.close();
+                        System.exit(0);
+                        break;
                 }
             }
-        } while (true) ;
+        }
     }
+
 
     private static void draw(MapCell[][] mapCells, Screen screen) {
 
@@ -299,15 +298,15 @@ public class Bomberman {
             player1.explode();
         }
 
-            if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE / 4 && !player1.bomb.isVisible()) {
-                player1.deplode();
-            }
-
-            if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
-                player2.explode();
-            }
-                if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE / 4 && !player2.bomb.isVisible()) {
-                    player2.deplode();
-                }
-            }
+        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE / 4 && !player1.bomb.isVisible()) {
+            player1.deplode();
         }
+
+        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
+            player2.explode();
+        }
+        if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE / 4 && !player2.bomb.isVisible()) {
+            player2.deplode();
+        }
+    }
+}

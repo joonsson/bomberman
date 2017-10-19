@@ -29,11 +29,12 @@ public class Player {
     protected Sound bombPlant;
     protected Sound bombExplode;
     protected TextColor playerBG;
-    protected PowerUp powerUp = new PowerUp(20,20);
+    protected PowerUp powerUp = new PowerUp(20,20,1,0,1,1, player, screen);
     protected double powerLevelBomb=2;
     protected int powerLevelSpeed=1;
     protected boolean powerSpeed;
     protected boolean powerBombs;
+    protected int powerLevelLife=1;
 
 
 
@@ -151,6 +152,8 @@ public class Player {
 
         if (powerBombs) { // HOW WILL I IMPLEMENT THIS POWERUP?
             powerLevelBomb = powerUp.getBiggerBombs();
+
+
             for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
                 for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
                     map[i][j].setWalkable(true);
