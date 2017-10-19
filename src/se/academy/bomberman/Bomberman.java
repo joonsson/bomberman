@@ -81,10 +81,10 @@ public class Bomberman implements Constants {
         Player player2 = new Player(BHSTARTX, BHSTARTY, playerModel2, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-        Player player3 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
+        Player player3 = new Player(BHSTARTX, BHSTARTY, playerModel3, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-        Player player4 = new Player(BHSTARTX, BHSTARTY, 'H', new TextColor.RGB(0, 100, 200),
+        Player player4 = new Player(BHSTARTX, BHSTARTY, playerModel4, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
         player2.setEnemy(player1);
