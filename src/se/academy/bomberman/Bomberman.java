@@ -65,6 +65,7 @@ public class Bomberman implements Constants {
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
+      
     }
 
     private static void initGame(Screen screen) {
