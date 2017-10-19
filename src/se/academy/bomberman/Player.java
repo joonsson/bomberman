@@ -15,12 +15,10 @@ public class Player implements Constants {
     private int powerLevelSpeed = 1;
     private int posX;
     private int posY;
-    private TextCharacter playerModel;
     private int vSpeed;
     private int hSpeed;
     private Screen screen;
     private Bomb bomb;
-    private TextCharacter playerModelBomb;
     private TextColor bg;
     private MapCell[][] map;
     private boolean bombed;
@@ -28,28 +26,36 @@ public class Player implements Constants {
     private Player enemy;
     private Sound bombPlant;
     private Sound bombExplode;
-    private TextColor playerBG;
-
     private int lives;
     private Random rand = new Random();
     private List<PowerUp> powerUps;
     private boolean suicided = false;
 
+    // Cosmetics
+    private char [] playerModel;
+    private char [] playerModelBomb;
+    private TextColor playerBG;
+    private TextColor bombBG;
+    private TextColor playerColor;
+
 // endregion
 
-    Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
+    Player(int x, int y, char[] playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
            TextColor bombColor, TextColor bg, TextColor bombBG, MapCell[][] map, List<PowerUp> powerUps) {
 
-        this.bg = bg;
+        this.playerModel = playerModel;
+        this.playerColor = playerColor;
         this.playerBG = playerBG;
+        playerModelBomb = bombModel;
+        this.bomb = new Bomb(bombColor, bombBG);
+        this.bombBG = bombBG;
+
+        this.bg = bg;
         this.posX = x;
         this.posY = y;
-        this.playerModel = new TextCharacter(playerModel, playerColor, playerBG);
         this.vSpeed = 2;
         this.hSpeed = 3;
         this.screen = screen;
-        this.bomb = new Bomb(bombColor, bombBG);
-        playerModelBomb = new TextCharacter(playerModel, playerColor, bombBG);
         this.map = map;
         bombed = false;
         living = true;
@@ -63,9 +69,10 @@ public class Player implements Constants {
     }
 
     private void init() {
+        int x = 0;
         for (int i = posX; i < posX + 3; i++) {
             for (int j = posY; j < posY + 2; j++) {
-                screen.setCharacter(i, j, playerModel);
+                screen.setCharacter(i, j, new TextCharacter(playerModel[x++], playerColor, playerBG));
             }
         }
     }
@@ -90,10 +97,12 @@ public class Player implements Constants {
     }
 
     void move(int direction) {
+
         if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+            int x = 0;
             for (int i = posX; i < posX + 3; i++) {
                 for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, bomb.getModel());
+                    screen.setCharacter(i, j, new TextCharacter(bombModel[x++], playerColor, bombBG));
                 }
             }
 
@@ -149,9 +158,10 @@ public class Player implements Constants {
                     }
                 }
             }
+            int x = 0;
             for (int i = posX; i < posX + 3; i++) {
                 for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, playerModel);
+                    screen.setCharacter(i, j, new TextCharacter(playerModel[x++], playerColor, playerBG));
                 }
             }
         }

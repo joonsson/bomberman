@@ -13,8 +13,8 @@ public interface Constants {
     int blockSizeX = 3;
     int blockSizeY = 2;
     int size = 9;
-    int COLUMNS = size*blockSizeX+wallThickness*2;
-    int ROWS = size*blockSizeY+wallThickness*2;
+    int COLUMNS = size * blockSizeX + wallThickness * 2;
+    int ROWS = size * blockSizeY + wallThickness * 2;
     int SCREENWIDTH = 129;
     int SCREENHEIGHT = 49;
 
@@ -30,10 +30,15 @@ public interface Constants {
     int RANDOM = 2;
 
     // PLAYERS
+    char[] bombModel    = {' ', 'T', '/', 'N', '*', 'T'};
+    char[] playerModel1 = {'¤', '(', ' ', 'I', '¤', ')'};
+    char[] playerModel2 = {'o', '(', '|', '_', '.', ')'};
+    char[] playerModel3 = {};
+    char[] playerModel4 = {};
     int BJSTARTX = 1;
-    int BHSTARTX = COLUMNS-4;
+    int BHSTARTX = COLUMNS - 4;
     int BJSTARTY = 1;
-    int BHSTARTY = ROWS-3;
+    int BHSTARTY = ROWS - 3;
     long DELTAT = 16;
     int NORTH = 0;
     int SOUTH = 1;
