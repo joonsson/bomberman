@@ -36,6 +36,11 @@ public interface Constants {
     char[] playerModel2 = {'o', '(', '|', '_', '.', ')'};
     char[] playerModel3 = {};
     char[] playerModel4 = {};
+    char[] death ={'D','A','E','T','H','S'};
+    char[] LIFE ={'!','L','I','F','E','!'};
+    char[] SPEEDS ={'S','P','E','E','D',' ',};
+    char[] BIOMBS ={'B','O','O','O','O','M'};
+
     int BJSTARTX = 1;
     int BHSTARTX = COLUMNS - 4;
     int BJSTARTY = 1;
