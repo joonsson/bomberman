@@ -63,7 +63,7 @@ public class Bomberman {
                     e.printStackTrace();
                 }
 
-            }while (inGame) ;
+            } while (inGame);
             endGame(screen);
             gameOver(screen, players);
         }
@@ -306,15 +306,15 @@ public class Bomberman {
             player1.explode();
         }
 
-            if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
-                player1.deplode();
-            }
-
-            if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
-                player2.explode();
-            }
-                if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
-                    player2.deplode();
-                }
-            }
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
+            player1.deplode();
         }
+
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
+            player2.explode();
+        }
+        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
+            player2.deplode();
+        }
+    }
+}
