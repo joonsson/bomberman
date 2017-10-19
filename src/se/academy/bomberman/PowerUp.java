@@ -71,23 +71,47 @@ public class PowerUp implements Constants {
         if (konst>=0 && konst<4) {
             switch (konst) {
                 case 0:
-                    TextCharacter deaths = new TextCharacter('D', new TextColor.RGB(0, 250, 0), TextColor.ANSI.DEFAULT);
-                    screen.setCharacter(posX, posY, deaths);
+//                    TextCharacter deaths = new TextCharacter('D', new TextColor.RGB(0, 250, 0), TextColor.ANSI.DEFAULT);
+//                    screen.setCharacter(posX, posY, deaths);
+                    int n = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(death[n++], new TextColor.RGB(0,250,0), TextColor.ANSI.DEFAULT));
+                        }
+                    }
                     break;
 
                 case 1:
-                    TextCharacter life = new TextCharacter('L', new TextColor.RGB(250, 250, 250), TextColor.ANSI.DEFAULT);
-                    screen.setCharacter(posX, posY, life);
+//                    TextCharacter life = new TextCharacter('L', new TextColor.RGB(250, 250, 250), TextColor.ANSI.DEFAULT);
+//                    screen.setCharacter(posX, posY, life);
+                   n = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(LIFE[n++], new TextColor.RGB(0,250,250), TextColor.ANSI.DEFAULT));
+                        }
+                    }
                     break;
 
                 case 2:
-                    TextCharacter speeds = new TextCharacter('S', new TextColor.RGB(250, 0, 0), TextColor.ANSI.DEFAULT);
-                    screen.setCharacter(posX, posY, speeds);
+//                    TextCharacter speeds = new TextCharacter('S', new TextColor.RGB(250, 0, 0), TextColor.ANSI.DEFAULT);
+//                    screen.setCharacter(posX, posY, speeds);
+                     n = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(SPEEDS[n++], new TextColor.RGB(250,0,0), TextColor.ANSI.DEFAULT));
+                        }
+                    }
                     break;
 
                 case 3:
-                    TextCharacter bomber = new TextCharacter('B', new TextColor.RGB(0,0,250), TextColor.ANSI.DEFAULT);
-                    screen.setCharacter(posX, posY, bomber);
+//                    TextCharacter bomber = new TextCharacter('B', new TextColor.RGB(0,0,250), TextColor.ANSI.DEFAULT);
+//                    screen.setCharacter(posX, posY, bomber);
+                    n = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(BIOMBS[n++], new TextColor.RGB(0,0,250), TextColor.ANSI.DEFAULT));
+                        }
+                    }
                     break;
                 default:
                     break;

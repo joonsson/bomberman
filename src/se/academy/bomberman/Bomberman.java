@@ -60,8 +60,9 @@ public class Bomberman implements Constants {
         TerminalSize newSize = new TerminalSize(SCREENWIDTH, SCREENHEIGHT);
         screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
-        menuMusic = new Music("src/Sounds/Brinstar.mp3");
+        menuMusic = new Music("src/Sounds/TNT.mp3");
         menuMusic.start();
+        menuMusic.mediaPlayer.setVolume(0.5);
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
@@ -71,7 +72,6 @@ public class Bomberman implements Constants {
     private static void initGame(Screen screen) {
         map = new Map(COLUMNS, ROWS); //TODO change where we draw the map and start pos
         screen.clear();
-        gameMusic = new Music("src/Sounds/TNT.mp3");
         draw(map.getCells(), screen);
         List<PowerUp> powerUps = new ArrayList<>();
         Player player1 = new Player(BJSTARTX, BJSTARTY, playerModel1, new TextColor.RGB(180, 10, 140),
@@ -81,6 +81,12 @@ public class Bomberman implements Constants {
         Player player2 = new Player(BHSTARTX, BHSTARTY, playerModel2, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
                 map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+        /*Player player3 = new Player(BHSTARTX, BHSTARTY, playerModel3, new TextColor.RGB(0, 100, 200),
+                new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
+                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+        Player player4 = new Player(BHSTARTX, BHSTARTY, playerModel4, new TextColor.RGB(0, 100, 200),
+                new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
+                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);*/
         player2.setEnemy(player1);
         player1.setEnemy(player2);
 
@@ -89,10 +95,13 @@ public class Bomberman implements Constants {
 
         players.add(player1);
         players.add(player2);
+        /*players.add(player3);
+        players.add(player4);*/
+        player1.setPlayers(players);
+        player2.setPlayers(players);
+        /*player3.setPlayers(players);
+        player4.setPlayers(players);*/
         menuMusic.mediaPlayer.pause();
-        //gameMusic.start();
-        gameMusic.mediaPlayer.setVolume(0.3);
-
     }
 
     private static void gameOver(Screen screen, List<Player> players) throws IOException {
@@ -164,7 +173,6 @@ public class Bomberman implements Constants {
     }
 
     private static void endGame(Screen screen) throws IOException {
-        gameMusic.mediaPlayer.pause();
         Music endGame = new Music("src/Sounds/smb_mariodie.wav");
         endGame.start();
         screen.refresh();
