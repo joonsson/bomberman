@@ -96,7 +96,7 @@ public class Map implements Constants {
             for (int x = blockSizeX; x < columns; x = x + blockSizeX) {
                 for (int y = 1; y < rows - 1; y = y + blockSizeY) {
                     if (Block.isPlaceable(x, y, this)) {
-                        if(new Random().nextInt(3)== 1 && !cells[x][y].isSpawnable()){
+                        if(new Random().nextInt(BLOCKRATE)== 1 && !cells[x][y].isSpawnable()){
                             new Block(BRICK, x, y, this);
 
                         }

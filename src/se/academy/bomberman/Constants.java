@@ -29,6 +29,7 @@ public interface Constants {
     int NORMAL = 0;
     int BLOCKS = 1;
     int RANDOM = 2;
+    int BLOCKRATE = 3;
 
     // PLAYERS
     char[] bombModel    = {' ', 'T', '/', 'N', '*', 'T'};
