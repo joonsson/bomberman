@@ -84,6 +84,7 @@ public class Player implements Constants {
             }
             bomb.setStart(System.currentTimeMillis());
             bombed = true;
+            bombPlant.stopp();
             bombPlant.play();
 
         }
@@ -161,6 +162,7 @@ public class Player implements Constants {
         boolean hit = false;
         boolean enemyHit = false;
         boolean hitWall = false;
+        bombExplode.stopp();
         bombExplode.play();
 
 
