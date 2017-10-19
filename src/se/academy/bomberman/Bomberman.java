@@ -19,14 +19,6 @@ import java.util.List;
 
 public class Bomberman implements Constants {
 
-    static protected final int NORTH = 0;
-    static protected final int SOUTH = 1;
-    static protected final int WEST = 2;
-    static protected final int EAST = 3;
-    private static final int COLUMNS = 29;
-    private static final int SCREENWIDTH = 129;
-    private static final int ROWS = 20;
-    private static final int SCREENHEIGHT = 49;
     private static final int BJSTARTX = 1;
     private static final int BHSTARTX = COLUMNS - 4;
     private static final int BJSTARTY = 1;
