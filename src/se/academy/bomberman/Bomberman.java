@@ -18,12 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Bomberman implements Constants {
-
-    private static final int BJSTARTX = 1;
-    private static final int BHSTARTX = COLUMNS - 4;
-    private static final int BJSTARTY = 1;
-    private static final int BHSTARTY = ROWS - 3;
-    private static final long DELTAT = 16;
     public static boolean inGame = true;
     private static boolean playing;
     private static List<Player> players;
