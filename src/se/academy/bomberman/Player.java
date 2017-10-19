@@ -5,6 +5,8 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
+import java.util.Random;
+
 public class Player {
 
 
@@ -233,7 +235,6 @@ public class Player {
         }
         bomb.setVisible(false);
         bomb.setStart(System.currentTimeMillis());
-
     }
 
     void deplode() {

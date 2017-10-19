@@ -6,7 +6,7 @@ import com.googlecode.lanterna.screen.Screen;
 
 import java.util.Random;
 
-public class PowerUp {
+public class PowerUp implements Constants {
 
     private int posX = 10;
     private int posY = 10;
@@ -17,14 +17,19 @@ public class PowerUp {
     private boolean used;
 
 
-
-
-
     public PowerUp(int x, int y, Screen screen) {
         Random rand = new Random();
         this.posX = x;
         this.posY = y;
-        this.konst = rand.nextInt(4);
+        int chancePower = rand.nextInt(100);
+        if(chancePower<2){
+            this.konst = DEAD;
+        }else if(chancePower <20){
+            this.konst=LIVE;
+        }else if(chancePower<60){
+            this.konst=SPEED;
+        }else
+            this.konst=BOMB;
         this.screen = screen;
         used = false;
         drawPowerUp(screen);
