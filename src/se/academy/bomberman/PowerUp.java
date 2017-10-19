@@ -41,15 +41,18 @@ public class PowerUp {
                 break;
 
             case LIVE:
+                Sound oneUp = new Sound("src/Sounds/smb_1-up.wav");
                 player.setLives(player.getLives()+1);
+                oneUp.start();
                 break;
 
             case SPEED:
+                Sound speed = new Sound("src/Sounds/gotta go fast.wav");
                 player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
+                speed.start();
                 break;
 
             case BOMB:
-
                 player.setPowerLevelBomb(player.getPowerLevelBomb()+1);
                 break;
             default:
