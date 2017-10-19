@@ -141,7 +141,9 @@ public class Player {
         // VÄNSTER
         for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
-                if (!map[i][j].isDestructible()) {
+                if (
+
+                        !map[i][j].isDestructible()) {
                     hitWall = true;
                     break;
                 }
