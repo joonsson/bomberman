@@ -107,6 +107,9 @@ public class Bomberman implements Constants {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
             }
+            if (players.get(1).isSuicided()) {
+        tg.putString(50, 24, "Player2 suicided. You suck!");
+            }
         } else {
             BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
             String s = reader.readLine();
@@ -114,6 +117,9 @@ public class Bomberman implements Constants {
             while (s != null) {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
+            }
+            if (players.get(0).isSuicided()) {
+        tg.putString(50, 24, "Player1 suicided. You suck!");
             }
         }
         tg.putString(50, 28, "Press enter to play again.");
@@ -236,7 +242,6 @@ public class Bomberman implements Constants {
         }
     }
 
-
     private static void draw(MapCell[][] mapCells, Screen screen) {
 
         for (int i = 0; i < COLUMNS; i++) {
@@ -289,7 +294,6 @@ public class Bomberman implements Constants {
             }
         }
     }
-
 
     static void bombCheck(List<Player> players) {
         Player player1 = players.get(0);
