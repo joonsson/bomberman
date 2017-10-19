@@ -29,24 +29,6 @@ public class PowerUp {
     }
 
     // region Getters/setters
-    public int getLife() {
-        player.powerLevelLife = life;
-        return player.powerLevelLife;
-    }
-
-    public void setLife(int life) {
-        this.life = life + 1;
-
-    }
-
-    public int getDead() {
-        player.powerLevelLife = dead;
-        return player.powerLevelLife;
-    }
-
-    public void setDead(int dead) {
-        this.dead = getLife() - 1;
-    }
 
     public int getPosY() {
         return posY;
@@ -63,22 +45,12 @@ public class PowerUp {
 
     public void setPosX(int posX) {
         this.posX = posX;
-    }
 
-    public int getSpeed() {
-        this.speed = speed + 1;
-        return speed;
-    }
-
-    public int getBiggerBombs() {
-        this.biggerBombs = biggerBombs + 1;
-
-        return biggerBombs;
     }
 
     //endregion
 
-    public void walkedONMe(Player player){
+    public void walkedOnMe(Player player){
         switch (konst) {
             case 0:
                 // death
@@ -90,22 +62,17 @@ public class PowerUp {
                 break;
 
             case 2:
-                player.
+                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
                 break;
 
             case 3:
 
-                TextCharacter bomber = new TextCharacter('B', new TextColor.RGB(0, 0, 0), TextColor.ANSI.DEFAULT);
+                player.setPowerLevelBomb(player.getPowerLevelBomb()+1);
                 break;
             default:
                 break;
 
         }
-
-
-
-
-
     }
 
     public void drawPowerUp(Screen screen, int x, int y, int randomSpawn) {
