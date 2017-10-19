@@ -62,7 +62,7 @@ public class Bomberman implements Constants {
         screen.startScreen();
         menuMusic = new Music("src/Sounds/TNT.mp3");
         menuMusic.start();
-        menuMusic.mediaPlayer.setVolume(0.5);
+        menuMusic.mediaPlayer.setVolume(1);
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
