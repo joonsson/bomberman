@@ -109,30 +109,34 @@ public class Player {
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
         }*/
-        switch (direction) {
-            case NORTH:
-                if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
-                        map[getPosX() + 2][getPosY() - 1].isWalkable()) {
-                    setPosY(getPosY() - vSpeed * powerLevelSpeed);
-                }
-                break;
-            case SOUTH:
-                if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
-                        map[getPosX() + 2][getPosY() + 2].isWalkable()) {
-                    setPosY(getPosY() + vSpeed * powerLevelSpeed);
-                }
-                break;
-            case WEST:
-                if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() - hSpeed * powerLevelSpeed);
-                }
-                break;
-            case EAST:
-                if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() + hSpeed * powerLevelSpeed);
-                }
-                break;
-        }
+      for (int i = 0; i < powerLevelSpeed; i++) {
+          switch (direction) {
+              case NORTH:
+                  if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
+                          map[getPosX() + 2][getPosY() - 1].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() - 2 == enemy.getPosY())) {
+                      setPosY(getPosY() - vSpeed);
+                  }
+                  break;
+              case SOUTH:
+                  if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
+                          map[getPosX() + 2][getPosY() + 2].isWalkable() && !(getPosX() == enemy.getPosX() && getPosY() + 2 == enemy.getPosY())) {
+                      setPosY(getPosY() + vSpeed);
+                  }
+                  break;
+              case WEST:
+                  if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
+                          !(getPosX() - 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                      setPosX(getPosX() - hSpeed);
+                  }
+                  break;
+              case EAST:
+                  if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
+                          !(getPosX() + 3 == enemy.getPosX() && getPosY() == enemy.getPosY())) {
+                      setPosX(getPosX() + hSpeed);
+                  }
+                  break;
+          }
+      }
         for (int i = posX; i < posX + 3; i++) {
             for (int j = posY; j < posY + 2; j++) {
                 screen.setCharacter(i, j, playerModel);
@@ -147,7 +151,7 @@ public class Player {
         bombExplode.play();
 
 
-        for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
+        for (int i = bomb.getPosX(); i < bomb.getPosY() + 2; i++) {
             for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
                 map[i][j].setWalkable(true);
             }
