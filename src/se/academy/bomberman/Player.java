@@ -62,7 +62,7 @@ public class Player {
         lives = 1;
     }
 
-    private void init() {
+    void init() {
         for (int i = posX; i < posX + 3; i++) {
             for (int j = posY; j < posY + 2; j++) {
                 screen.setCharacter(i, j, playerModel);
@@ -70,7 +70,7 @@ public class Player {
         }
     }
 
-    private void dropBomb() {
+    void dropBomb() {
 
         if (!bombed) {
             bomb.setPosX(posX);
@@ -88,7 +88,7 @@ public class Player {
 
         }
     }
-    private void move(int direction) {
+    void move(int direction) {
         if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
             for (int i = posX; i < posX + 3; i++) {
                 for (int j = posY; j < posY + 2; j++) {
@@ -143,7 +143,7 @@ public class Player {
         }
     }
 
-    private void explode() {
+    void explode() {
         boolean hit = false;
         boolean enemyHit = false;
         boolean hitWall = false;
@@ -239,7 +239,7 @@ public class Player {
         }
     }
 
-    private void deplode() {
+    void deplode() {
         boolean hitWall = false;
         // VÄNSTER
         for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
@@ -319,8 +319,12 @@ public class Player {
         this.living = alive;
     }
 
-    public boolean isBombed() {
+    public boolean hasBombed() {
         return bombed;
+    }
+
+    public long getFUSE() {
+        return FUSE;
     }
 
     public void setBombed(boolean bombed) {
@@ -333,6 +337,38 @@ public class Player {
 
     public void setEnemy(Player enemy) {
         this.enemy = enemy;
+    }
+
+    public int getvSpeed() {
+        return vSpeed;
+    }
+
+    public void setvSpeed(int vSpeed) {
+        this.vSpeed = vSpeed;
+    }
+
+    public int gethSpeed() {
+        return hSpeed;
+    }
+
+    public void sethSpeed(int hSpeed) {
+        this.hSpeed = hSpeed;
+    }
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
     }
     //endregion
 }

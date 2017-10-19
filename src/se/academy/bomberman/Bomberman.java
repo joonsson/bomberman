@@ -302,18 +302,18 @@ public class Bomberman {
         Player player1 = players.get(0);
         Player player2 = players.get(1);
 
-        if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE && player1.bomb.isVisible()) {
+        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
             player1.explode();
         }
 
-            if (player1.bombed && System.currentTimeMillis() - player1.bomb.getStart() > player1.FUSE / 4 && !player1.bomb.isVisible()) {
+            if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
                 player1.deplode();
             }
 
-            if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE && player2.bomb.isVisible()) {
+            if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
                 player2.explode();
             }
-                if (player2.bombed && System.currentTimeMillis() - player2.bomb.getStart() > player2.FUSE / 4 && !player2.bomb.isVisible()) {
+                if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 4 && !player2.getBomb().isVisible()) {
                     player2.deplode();
                 }
             }
