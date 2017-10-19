@@ -73,6 +73,14 @@ public class PowerUp implements Constants {
                 case 0:
                     TextCharacter deaths = new TextCharacter('D', new TextColor.RGB(0, 250, 0), TextColor.ANSI.DEFAULT);
                     screen.setCharacter(posX, posY, deaths);
+
+                    //int [] deaths = new int [5];
+                    int n = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, deaths[n++]);
+                        }
+                    }
                     break;
 
                 case 1:
