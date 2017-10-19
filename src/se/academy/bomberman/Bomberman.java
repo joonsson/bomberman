@@ -244,6 +244,7 @@ public class Bomberman {
         }
     }
 
+
     private static void draw(MapCell[][] mapCells, Screen screen) {
 
         for (int i = 0; i < COLUMNS; i++) {
@@ -305,10 +306,10 @@ public class Bomberman {
         if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
             player1.explode();
         }
-
         if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 4 && !player1.getBomb().isVisible()) {
             player1.deplode();
         }
+
 
         if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
             player2.explode();

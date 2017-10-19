@@ -7,6 +7,7 @@ import com.googlecode.lanterna.screen.Screen;
 
 public class Player {
 
+
     private int posX;
     private int posY;
     private TextCharacter playerModel;
@@ -28,14 +29,9 @@ public class Player {
     private Sound bombPlant;
     private Sound bombExplode;
     private TextColor playerBG;
-    private PowerUp powerUp = new PowerUp(20,20);
-    private double powerLevelBomb=2;
-    private int powerLevelSpeed=1;
-    private boolean powerSpeed;
-    private boolean powerBombs;
+    private double powerLevelBomb = 2;
+    private int powerLevelSpeed = 1;
     private int lives;
-
-
 
 
     Player(int x, int y, char playerModel, TextColor playerColor, TextColor playerBG, Screen screen,
@@ -88,6 +84,7 @@ public class Player {
 
         }
     }
+
     void move(int direction) {
         if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
             for (int i = posX; i < posX + 3; i++) {
@@ -103,7 +100,7 @@ public class Player {
                 }
             }
         }
-        if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
+      /*  if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
             powerSpeed = true;
         }
         if (powerUp.getPosX()==getPosX() &&  powerUp.getPosY()==getPosY()){
@@ -111,28 +108,28 @@ public class Player {
         }
         if (powerSpeed){
             powerLevelSpeed =powerUp.getSpeed();
-        }
+        }*/
         switch (direction) {
             case NORTH:
                 if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
                         map[getPosX() + 2][getPosY() - 1].isWalkable()) {
-                    setPosY(getPosY() - vSpeed*powerLevelSpeed);
+                    setPosY(getPosY() - vSpeed * powerLevelSpeed);
                 }
                 break;
             case SOUTH:
                 if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
                         map[getPosX() + 2][getPosY() + 2].isWalkable()) {
-                    setPosY(getPosY() + vSpeed*powerLevelSpeed);
+                    setPosY(getPosY() + vSpeed * powerLevelSpeed);
                 }
                 break;
             case WEST:
                 if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() - hSpeed*powerLevelSpeed);
+                    setPosX(getPosX() - hSpeed * powerLevelSpeed);
                 }
                 break;
             case EAST:
                 if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable()) {
-                    setPosX(getPosX() + hSpeed*powerLevelSpeed);
+                    setPosX(getPosX() + hSpeed * powerLevelSpeed);
                 }
                 break;
         }
@@ -150,93 +147,91 @@ public class Player {
         bombExplode.play();
 
 
-        if (powerBombs) { // HOW WILL I IMPLEMENT THIS POWERUP?
-            powerLevelBomb = powerUp.getBiggerBombs();
-            for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
-                for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
-                    map[i][j].setWalkable(true);
-                }
-
-            }
-            // VÄNSTER
-            for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
-                for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
-                    if (!map[i][j].isDestructible()) {
-                        hitWall = true;
-                        break;
-                    }
-                    map[i][j].setWalkable(true);
-                    if (i == posX && j == posY) hit = true;
-                    if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
-                    screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
-
-                }
-                if (hitWall) break;
-            }
-            hitWall = false;
-            // Höger
-            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 4 * powerLevelBomb; i++) {
-                for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
-                    if (!map[i][j].isDestructible()) {
-                        hitWall = true;
-                        break;
-                    }
-                    map[i][j].setWalkable(true);
-                    if (i == posX && j == posY) hit = true;
-                    if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
-                    screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
-                }
-                if (hitWall) break;
-            }
-            hitWall = false;
-
-            //Uppåt
-            for (int j = bomb.getPosY(); j >= bomb.getPosY() - 2 * powerLevelBomb; j--) {
-                for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
-                    if (!map[i][j].isDestructible()) {
-                        hitWall = true;
-                        break;
-                    }
-                    map[i][j].setWalkable(true);
-                    if (i == posX && j == posY) hit = true;
-                    if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
-                    screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
-                }
-                if (hitWall) break;
-            }
-            hitWall = false;
-
-            // NERÅT
-            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
-                for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
-                    if (!map[i][j].isDestructible()) {
-                        hitWall = true;
-                        break;
-                    }
-                    map[i][j].setWalkable(true);
-                    if (i == posX && j == posY) hit = true;
-                    if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
-                    screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
-                }
-                if (hitWall) break;
+        for (int i = bomb.getPosX(); i < bomb.getPosY() + 3; i++) {
+            for (int j = bomb.getPosY(); j < bomb.getPosY() + 2; j++) {
+                map[i][j].setWalkable(true);
             }
 
-            if (hit) {
-                lives--;
-                if (lives == 0) {
-                    living = false;
-                    Bomberman.inGame = false;
-                }
-            } else if (enemyHit) {
-                enemy.lives--;
-                if (enemy.lives == 0) {
-                    enemy.living = false;
-                    Bomberman.inGame = false;
-                }
-            }
-            bomb.setVisible(false);
-            bomb.setStart(System.currentTimeMillis());
         }
+        // VÄNSTER
+        for (int i = bomb.getPosX(); i >= bomb.getPosX() - 3 * powerLevelBomb; i--) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                map[i][j].setWalkable(true);
+                if (i == posX && j == posY) hit = true;
+                if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+
+            }
+            if (hitWall) break;
+        }
+        hitWall = false;
+        // Höger
+        for (int i = bomb.getPosX(); i <= bomb.getPosX() + 4 * powerLevelBomb; i++) {
+            for (int j = bomb.getPosY(); j <= bomb.getPosY() + 1 * powerLevelBomb; j++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                map[i][j].setWalkable(true);
+                if (i == posX && j == posY) hit = true;
+                if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+            }
+            if (hitWall) break;
+        }
+        hitWall = false;
+
+        //Uppåt
+        for (int j = bomb.getPosY(); j >= bomb.getPosY() - 2 * powerLevelBomb; j--) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                map[i][j].setWalkable(true);
+                if (i == posX && j == posY) hit = true;
+                if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+            }
+            if (hitWall) break;
+        }
+        hitWall = false;
+
+        // NERÅT
+        for (int j = bomb.getPosY(); j <= bomb.getPosY() + 3 * powerLevelBomb; j++) {
+            for (int i = bomb.getPosX(); i <= bomb.getPosX() + 1 * powerLevelBomb; i++) {
+                if (!map[i][j].isDestructible()) {
+                    hitWall = true;
+                    break;
+                }
+                map[i][j].setWalkable(true);
+                if (i == posX && j == posY) hit = true;
+                if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
+                screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
+            }
+            if (hitWall) break;
+        }
+
+        if (hit) {
+            lives--;
+            if (lives == 0) {
+                living = false;
+                Bomberman.inGame = false;
+            }
+        } else if (enemyHit) {
+            enemy.lives--;
+            if (enemy.lives == 0) {
+                enemy.living = false;
+                Bomberman.inGame = false;
+            }
+        }
+        bomb.setVisible(false);
+        bomb.setStart(System.currentTimeMillis());
+
     }
 
     void deplode() {
@@ -250,7 +245,7 @@ public class Player {
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
-            if(hitWall)break;
+            if (hitWall) break;
         }
         hitWall = false;
         // Höger
@@ -262,7 +257,7 @@ public class Player {
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
-            if(hitWall)break;
+            if (hitWall) break;
         }
         hitWall = false;
 
@@ -275,7 +270,7 @@ public class Player {
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
-            if(hitWall) break;
+            if (hitWall) break;
         }
         hitWall = false;
 
@@ -288,7 +283,7 @@ public class Player {
                 }
                 screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
             }
-            if(hitWall) break;
+            if (hitWall) break;
         }
         bombed = false;
     }
@@ -369,6 +364,22 @@ public class Player {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public double getPowerLevelBomb() {
+        return powerLevelBomb;
+    }
+
+    public void setPowerLevelBomb(double powerLevelBomb) {
+        this.powerLevelBomb = powerLevelBomb;
+    }
+
+    public int getPowerLevelSpeed() {
+        return powerLevelSpeed;
+    }
+
+    public void setPowerLevelSpeed(int powerLevelSpeed) {
+        this.powerLevelSpeed = powerLevelSpeed;
     }
     //endregion
 }
