@@ -7,33 +7,33 @@ import com.googlecode.lanterna.screen.Screen;
 
 public class Player {
 
-    protected int posX;
-    protected int posY;
-    protected TextCharacter playerModel;
-    protected int vSpeed;
-    protected int hSpeed;
-    protected Screen screen;
-    protected final int NORTH = 0;
-    protected final int SOUTH = 1;
-    protected final int WEST = 2;
-    protected final int EAST = 3;
-    protected Bomb bomb;
-    protected TextCharacter playerModelBomb;
-    protected TextColor bg;
-    protected MapCell[][] map;
-    protected final long DELTAT = 16;
-    protected final long FUSE = 3000;
-    protected boolean bombed;
-    protected boolean living;
-    protected Player enemy;
-    protected Sound bombPlant;
-    protected Sound bombExplode;
-    protected TextColor playerBG;
-    protected PowerUp powerUp = new PowerUp(20,20);
-    protected double powerLevelBomb=2;
-    protected int powerLevelSpeed=1;
-    protected boolean powerSpeed;
-    protected boolean powerBombs;
+    private int posX;
+    private int posY;
+    private TextCharacter playerModel;
+    private int vSpeed;
+    private int hSpeed;
+    private Screen screen;
+    private final int NORTH = 0;
+    private final int SOUTH = 1;
+    private final int WEST = 2;
+    private final int EAST = 3;
+    private Bomb bomb;
+    private TextCharacter playerModelBomb;
+    private TextColor bg;
+    private MapCell[][] map;
+    private final long FUSE = 3000;
+    private boolean bombed;
+    private boolean living;
+    private Player enemy;
+    private Sound bombPlant;
+    private Sound bombExplode;
+    private TextColor playerBG;
+    private PowerUp powerUp = new PowerUp(20,20);
+    private double powerLevelBomb=2;
+    private int powerLevelSpeed=1;
+    private boolean powerSpeed;
+    private boolean powerBombs;
+    private int lives;
 
 
 
@@ -59,6 +59,7 @@ public class Player {
         bombPlant.start();
         bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
         bombExplode.start();
+        lives = 1;
     }
 
     private void init() {
@@ -69,7 +70,7 @@ public class Player {
         }
     }
 
-    protected void dropBomb() {
+    private void dropBomb() {
 
         if (!bombed) {
             bomb.setPosX(posX);
@@ -87,7 +88,7 @@ public class Player {
 
         }
     }
-    protected void move(int direction) {
+    private void move(int direction) {
         if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
             for (int i = posX; i < posX + 3; i++) {
                 for (int j = posY; j < posY + 2; j++) {
@@ -142,7 +143,7 @@ public class Player {
         }
     }
 
-    protected void explode() {
+    private void explode() {
         boolean hit = false;
         boolean enemyHit = false;
         boolean hitWall = false;
@@ -221,18 +222,24 @@ public class Player {
             }
 
             if (hit) {
-                living = false;
-                Bomberman.inGame = false;
+                lives--;
+                if (lives == 0) {
+                    living = false;
+                    Bomberman.inGame = false;
+                }
             } else if (enemyHit) {
-                enemy.living = false;
-                Bomberman.inGame = false;
+                enemy.lives--;
+                if (enemy.lives == 0) {
+                    enemy.living = false;
+                    Bomberman.inGame = false;
+                }
             }
             bomb.setVisible(false);
             bomb.setStart(System.currentTimeMillis());
         }
     }
 
-    protected void deplode() {
+    private void deplode() {
         boolean hitWall = false;
         // VÄNSTER
         for (int i = bomb.getPosX(); i > bomb.getPosX() - 7; i--) {
