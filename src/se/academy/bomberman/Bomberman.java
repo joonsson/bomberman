@@ -36,7 +36,7 @@ public class Bomberman implements Constants {
                 long delay = System.currentTimeMillis();
                 screen.refresh();
 
-                bombCheck(players); // TODO walkable igen
+                bombCheck(players); // TODO walkable again
                 keyCheck(screen.pollInput(), players);
                 checkGameState();
 
