@@ -42,10 +42,14 @@ public interface Constants {
     char[] SPEEDS ={'S','P','E','E','D',' ',};
     char[] BIOMBS ={'B','O','O','O','O','M'};
 
-    int BJSTARTX = 1;
-    int BHSTARTX = COLUMNS - 4;
-    int BJSTARTY = 1;
-    int BHSTARTY = ROWS - 3;
+    int P1STARTX = 1;
+    int P2STARTX = COLUMNS - 4;
+    int P3STARTX = 1;
+    int P4STARTX = COLUMNS - 4;
+    int P1STARTY = 1;
+    int P2STARTY = 1;
+    int P3STARTY = ROWS - 3;
+    int P4STARTY = ROWS - 3;
     long DELTAT = 16;
     int NORTH = 0;
     int SOUTH = 1;

@@ -1,0 +1,13 @@
+P1 controls:
+UP:    W
+DOWN:  S
+LEFT:  A
+RIGHT: D
+BOMB:  C
+
+P3 controls:
+UP:    \u1F81C
+DOWN:  \u1F81D
+LEFT:  \u1F81E
+RIGHT: \u1F81CF
+BOMB:  ENTER

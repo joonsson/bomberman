@@ -38,6 +38,7 @@ public class Bomberman implements Constants {
 
                 bombCheck(players); // TODO walkable igen
                 keyCheck(screen.pollInput(), players);
+                checkGameState();
 
                 delay = System.currentTimeMillis() - delay;
                 delay = DELTAT - delay;
@@ -56,13 +57,25 @@ public class Bomberman implements Constants {
         }
     }
 
+    private static void checkGameState() {
+        int n = 0;
+        for (Player p: players) {
+            if (p.isLiving()) {
+                n++;
+            }
+        }
+        if (n < 2) {
+            inGame = false;
+        }
+    }
+
     private static void init() throws IOException {
         TerminalSize newSize = new TerminalSize(SCREENWIDTH, SCREENHEIGHT);
         screen = new DefaultTerminalFactory().setInitialTerminalSize(newSize).createScreen();
         screen.startScreen();
         menuMusic = new Music("src/Sounds/TNT.mp3");
+        menuMusic.mediaPlayer.setVolume(0.5);
         menuMusic.start();
-        menuMusic.mediaPlayer.setVolume(1);
         screen.setCursorPosition(null);
         mainMenu(screen);
         playing = true;
@@ -74,33 +87,30 @@ public class Bomberman implements Constants {
         screen.clear();
         draw(map.getCells(), screen);
         List<PowerUp> powerUps = new ArrayList<>();
-        Player player1 = new Player(BJSTARTX, BJSTARTY, playerModel1, new TextColor.RGB(180, 10, 140),
+        Player player1 = new Player(P1STARTX, P1STARTY, playerModel1, new TextColor.RGB(180, 10, 140),
                 new TextColor.RGB(100, 4, 80), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BJSTARTX][BJSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-
-        Player player2 = new Player(BHSTARTX, BHSTARTY, playerModel2, new TextColor.RGB(0, 100, 200),
+                map.getCells()[P1STARTX][P1STARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+        Player player2 = new Player(P2STARTX, P2STARTY, playerModel2, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-        /*Player player3 = new Player(BHSTARTX, BHSTARTY, playerModel3, new TextColor.RGB(0, 100, 200),
+                map.getCells()[P2STARTX][P2STARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+        Player player3 = new Player(P3STARTX, P3STARTY, playerModel3, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
-        Player player4 = new Player(BHSTARTX, BHSTARTY, playerModel4, new TextColor.RGB(0, 100, 200),
+                map.getCells()[P3STARTX][P3STARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
+        Player player4 = new Player(P4STARTX, P4STARTY, playerModel4, new TextColor.RGB(0, 100, 200),
                 new TextColor.RGB(0, 40, 160), screen, new TextColor.RGB(255, 0, 0),
-                map.getCells()[BHSTARTX][BHSTARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);*/
-        player2.setEnemy(player1);
-        player1.setEnemy(player2);
+                map.getCells()[P4STARTX][P4STARTY].color, new TextColor.RGB(180, 0, 0), map.getCells(), powerUps);
 
 
         players = new ArrayList<>();
 
         players.add(player1);
         players.add(player2);
-        /*players.add(player3);
-        players.add(player4);*/
+        players.add(player3);
+        players.add(player4);
         player1.setPlayers(players);
         player2.setPlayers(players);
-        /*player3.setPlayers(players);
-        player4.setPlayers(players);*/
+        player3.setPlayers(players);
+        player4.setPlayers(players);
         menuMusic.mediaPlayer.pause();
     }
 
@@ -118,17 +128,7 @@ public class Bomberman implements Constants {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
             }
-            if (players.get(1).isSuicided()) {
-        tg.putString(55, 18, "Player2 suicided.");
-                reader = new BufferedReader(new FileReader(new File("src/Text/usuck.txt")));
-                s = reader.readLine();
-                n = 20;
-                while (s != null) {
-                    tg.putString(25, n++, s);
-                    s = reader.readLine();
-                }
-            }
-        } else {
+        } else if (players.get(1).isLiving()) {
             BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p2win.txt")));
             String s = reader.readLine();
             int n = 10;
@@ -136,16 +136,35 @@ public class Bomberman implements Constants {
                 tg.putString(2, n++, s);
                 s = reader.readLine();
             }
-            if (players.get(0).isSuicided()) {
-        tg.putString(55, 18, "Player1 suicided.");
-                reader = new BufferedReader(new FileReader(new File("src/Text/usuck.txt")));
+        } else if (players.get(2).isLiving()) {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p3win.txt")));
+            String s = reader.readLine();
+            int n = 10;
+            while (s != null) {
+                tg.putString(2, n++, s);
                 s = reader.readLine();
-                n = 20;
-                while (s != null) {
-                    tg.putString(25, n++, s);
-                    s = reader.readLine();
-                }
             }
+        } else {
+            BufferedReader reader = new BufferedReader(new FileReader(new File("src/Text/p4win.txt")));
+            String s = reader.readLine();
+            int n = 10;
+            while (s != null) {
+                tg.putString(2, n++, s);
+                s = reader.readLine();
+            }
+        }
+        int n = 20;
+        if (players.get(0).isSuicided()) {
+            tg.putString(55, n++, "Player1 suicided.");
+        }
+        if (players.get(1).isSuicided()) {
+            tg.putString(55, n++, "Player2 suicided.");
+        }
+        if (players.get(2).isSuicided()) {
+            tg.putString(55, n++, "Player3 suicided.");
+        }
+        if (players.get(3).isSuicided()) {
+            tg.putString(55, n, "Player4 suicided.");
         }
         tg.putString(50, 28, "Press enter to play again.");
         tg.putString(50, 30, "Press escape to exit.");
@@ -202,6 +221,20 @@ public class Bomberman implements Constants {
             n--;
             while (s != null) {
                 tg.putString(45, n++, s);
+                s = reader.readLine();
+            }
+            int m = 10;
+            reader = new BufferedReader(new FileReader(new File("src/Text/controls1.txt")));
+            s = reader.readLine();
+            while (s != null) {
+                tg.putString(5, m++, s);
+                s = reader.readLine();
+            }
+            m = 10;
+            reader = new BufferedReader(new FileReader(new File("src/Text/controls2.txt")));
+            s = reader.readLine();
+            while (s != null) {
+                tg.putString(100, m++, s);
                 s = reader.readLine();
             }
             reader = new BufferedReader(new FileReader(new File("src/Text/start.txt")));
@@ -281,61 +314,85 @@ public class Bomberman implements Constants {
         if (keyStroke != null) {
             switch (keyStroke.getKeyType()) {
                 case ArrowUp:
-                    players.get(0).move(NORTH);
+                    players.get(2).move(NORTH);
                     break;
                 case ArrowRight:
-                    players.get(0).move(EAST);
+                    players.get(2).move(EAST);
                     break;
                 case ArrowLeft:
-                    players.get(0).move(WEST);
+                    players.get(2).move(WEST);
                     break;
                 case ArrowDown:
-                    players.get(0).move(SOUTH);
+                    players.get(2).move(SOUTH);
                     break;
                 case Enter:
-                    players.get(0).dropBomb();
+                    players.get(2).dropBomb();
                     break;
             }
             if (keyStroke.getKeyType() == KeyType.Character) {
                 switch (keyStroke.getCharacter()) {
                     case 'w':
-                        players.get(1).move(NORTH);
+                        players.get(0).move(NORTH);
                         break;
                     case 's':
-                        players.get(1).move(SOUTH);
+                        players.get(0).move(SOUTH);
                         break;
                     case 'a':
-                        players.get(1).move(WEST);
+                        players.get(0).move(WEST);
                         break;
                     case 'd':
-                        players.get(1).move(EAST);
+                        players.get(0).move(EAST);
                         break;
                     case 'c':
+                        players.get(0).dropBomb();
+                        break;
+                }
+                switch (keyStroke.getCharacter()) {
+                    case 'i':
+                        players.get(1).move(NORTH);
+                        break;
+                    case 'k':
+                        players.get(1).move(SOUTH);
+                        break;
+                    case 'j':
+                        players.get(1).move(WEST);
+                        break;
+                    case 'l':
+                        players.get(1).move(EAST);
+                        break;
+                    case 'n':
                         players.get(1).dropBomb();
                         break;
-                    // TODO Add more player controls
+                }
+                switch (keyStroke.getCharacter()) {
+                    case '8':
+                        players.get(3).move(NORTH);
+                        break;
+                    case '5':
+                        players.get(3).move(SOUTH);
+                        break;
+                    case '4':
+                        players.get(3).move(WEST);
+                        break;
+                    case '6':
+                        players.get(3).move(EAST);
+                        break;
+                    case '1':
+                        players.get(3).dropBomb();
+                        break;
                 }
             }
         }
     }
 
     static void bombCheck(List<Player> players) {
-        Player player1 = players.get(0);
-        Player player2 = players.get(1);
-
-        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() && player1.getBomb().isVisible()) {
-            player1.explode();
-        }
-        if (player1.hasBombed() && System.currentTimeMillis() - player1.getBomb().getStart() > player1.getFUSE() / 3 && !player1.getBomb().isVisible()) {
-            player1.deplode();
-        }
-
-
-        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() && player2.getBomb().isVisible()) {
-            player2.explode();
-        }
-        if (player2.hasBombed() && System.currentTimeMillis() - player2.getBomb().getStart() > player2.getFUSE() / 3 && !player2.getBomb().isVisible()) {
-            player2.deplode();
+        for (Player p: players) {
+            if (p.hasBombed() && System.currentTimeMillis() - p.getBomb().getStart() > p.getFUSE() && p.getBomb().isVisible()) {
+                p.explode();
+            }
+            if (p.hasBombed() && System.currentTimeMillis() - p.getBomb().getStart() > p.getFUSE() / 3 && !p.getBomb().isVisible()) {
+                p.deplode();
+            }
         }
     }
 }

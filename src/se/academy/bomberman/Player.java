@@ -12,7 +12,6 @@ public class Player implements Constants {
     // region Variables
 
     private double powerLevelBomb = 1;
-    private int powerLevelSpeed = 1;
     private int posX;
     private int posY;
     private int vSpeed;
@@ -23,7 +22,6 @@ public class Player implements Constants {
     private MapCell[][] map;
     private boolean bombed;
     private boolean living;
-    private Player enemy;
     private Sound bombPlant;
     private Sound bombExplode;
     private int lives;
@@ -31,6 +29,9 @@ public class Player implements Constants {
     private List<PowerUp> powerUps;
     private boolean suicided = false;
     private List<Player> players;
+    private boolean hit;
+    private int moveDelay;
+    private long lastMoved;
 
     // Cosmetics
     private char [] playerModel;
@@ -60,13 +61,16 @@ public class Player implements Constants {
         this.map = map;
         bombed = false;
         living = true;
-        init();
         bombPlant = new Sound("src/Sounds/smb_fireball.wav");
         bombPlant.start();
         bombExplode = new Sound("src/Sounds/smb_fireworks.wav");
         bombExplode.start();
         lives = 1;
         this.powerUps = powerUps;
+        hit = false;
+        moveDelay = 300;
+        lastMoved = 0;
+        init();
 
     }
 
@@ -100,97 +104,91 @@ public class Player implements Constants {
     }
 
     void move(int direction) {
+        if (System.currentTimeMillis() - lastMoved > moveDelay) {
+                if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+                    int x = 0;
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(bombModel[x++], playerColor, bombBG));
+                        }
+                    }
 
-        for (int m = 0; m < powerLevelSpeed; m++) {
-            if (bomb.isVisible() && bomb.getPosX() == getPosX() && bomb.getPosY() == posY) {
+                } else {
+                    for (int i = posX; i < posX + 3; i++) {
+                        for (int j = posY; j < posY + 2; j++) {
+                            screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
+                        }
+                    }
+                }
+                boolean playerCollision = false;
+                switch (direction) {
+                    case NORTH:
+                        for (Player p : players) {
+                            if (getPosX() == p.getPosX() && getPosY() - 2 == p.getPosY()) {
+                                playerCollision = true;
+                            }
+                        }
+                        if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
+                                map[getPosX() + 2][getPosY() - 1].isWalkable() && !playerCollision) {
+                            setPosY(getPosY() - vSpeed);
+                            lastMoved = System.currentTimeMillis();
+                        }
+                        break;
+                    case SOUTH:
+                        playerCollision = false;
+                        for (Player p : players) {
+                            if (getPosX() == p.getPosX() && getPosY() + 2 == p.getPosY()) {
+                                playerCollision = true;
+                            }
+                        }
+                        if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
+                                map[getPosX() + 2][getPosY() + 2].isWalkable() && !playerCollision) {
+                            setPosY(getPosY() + vSpeed);
+                            lastMoved = System.currentTimeMillis();
+                        }
+                        break;
+                    case WEST:
+                        playerCollision = false;
+                        for (Player p : players) {
+                            if (getPosX() - 3 == p.getPosX() && getPosY() == p.getPosY()) {
+                                playerCollision = true;
+                            }
+                        }
+                        if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
+                                !playerCollision) {
+                            setPosX(getPosX() - hSpeed);
+                            lastMoved = System.currentTimeMillis();
+                        }
+                        break;
+                    case EAST:
+                        playerCollision = false;
+                        for (Player p : players) {
+                            if (getPosX() + 3 == p.getPosX() && getPosY() == p.getPosY()) {
+                                playerCollision = true;
+                            }
+                        }
+                        if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
+                                !playerCollision) {
+                            setPosX(getPosX() + hSpeed);
+                            lastMoved = System.currentTimeMillis();
+                        }
+                        break;
+                }
+                if (!powerUps.isEmpty()) {
+                    for (int n = powerUps.size() - 1; n >= 0; n--) {
+                        PowerUp p = powerUps.get(n);
+                        if (getPosX() == p.getPosX() && getPosY() == p.getPosY()) {
+                            p.walkedOnMe(this);
+                            powerUps.remove(n);
+                        }
+                    }
+                }
                 int x = 0;
                 for (int i = posX; i < posX + 3; i++) {
                     for (int j = posY; j < posY + 2; j++) {
-                        screen.setCharacter(i, j, new TextCharacter(bombModel[x++], playerColor, bombBG));
+                        screen.setCharacter(i, j, new TextCharacter(playerModel[x++], playerColor, playerBG));
                     }
                 }
-
-            } else {
-                for (int i = posX; i < posX + 3; i++) {
-                    for (int j = posY; j < posY + 2; j++) {
-                        screen.setCharacter(i, j, new TextCharacter(' ', TextColor.ANSI.DEFAULT, bg));
-                    }
-                }
-            }
-      /*  if( powerUp.getPosX()== getPosX() &&  powerUp.getPosY()==getPosY()){
-            powerSpeed = true;
-        }
-        if (powerUp.getPosX()==getPosX() &&  powerUp.getPosY()==getPosY()){
-            powerBombs = true;
-        }
-        if (powerSpeed){
-            powerLevelSpeed =powerUp.getSpeed();
-        }*/
-            boolean playerCollision = false;
-            switch (direction) {
-                case NORTH:
-                    for (Player p: players) {
-                        if (getPosX() == p.getPosX() && getPosY() - 2 == p.getPosY()) {
-                            playerCollision = true;
-                        }
-                    }
-                    if (map[getPosX()][getPosY() - 1].isWalkable() && map[getPosX() + 1][getPosY() - 1].isWalkable() &&
-                            map[getPosX() + 2][getPosY() - 1].isWalkable() && !playerCollision) {
-                        setPosY(getPosY() - vSpeed);
-                    }
-                    break;
-                case SOUTH:
-                    playerCollision = false;
-                    for (Player p: players) {
-                        if (getPosX() == p.getPosX() && getPosY() + 2 == p.getPosY()) {
-                            playerCollision = true;
-                        }
-                    }
-                    if (map[getPosX()][getPosY() + 2].isWalkable() && map[getPosX() + 1][getPosY() + 2].isWalkable() &&
-                            map[getPosX() + 2][getPosY() + 2].isWalkable() && !playerCollision) {
-                        setPosY(getPosY() + vSpeed);
-                    }
-                    break;
-                case WEST:
-                    playerCollision = false;
-                    for (Player p: players) {
-                        if (getPosX() - 3 == p.getPosX() && getPosY() == p.getPosY()) {
-                            playerCollision = true;
-                        }
-                    }
-                    if (map[getPosX() - 1][getPosY()].isWalkable() && map[getPosX() - 1][getPosY() + 1].isWalkable() &&
-                            !playerCollision) {
-                        setPosX(getPosX() - hSpeed);
-                    }
-                    break;
-                case EAST:
-                    playerCollision = false;
-                    for (Player p: players) {
-                        if (getPosX() + 3 == p.getPosX() && getPosY() == p.getPosY()) {
-                            playerCollision = true;
-                        }
-                    }
-                    if (map[getPosX() + 3][getPosY()].isWalkable() && map[getPosX() + 3][getPosY() + 1].isWalkable() &&
-                            !playerCollision) {
-                        setPosX(getPosX() + hSpeed);
-                    }
-                    break;
-            }
-            if (!powerUps.isEmpty()) {
-                for (int n = powerUps.size() - 1; n >= 0; n--) {
-                    PowerUp p = powerUps.get(n);
-                    if (getPosX() == p.getPosX() && getPosY() == p.getPosY()) {
-                        p.walkedOnMe(this);
-                        powerUps.remove(n);
-                    }
-                }
-            }
-            int x = 0;
-            for (int i = posX; i < posX + 3; i++) {
-                for (int j = posY; j < posY + 2; j++) {
-                    screen.setCharacter(i, j, new TextCharacter(playerModel[x++], playerColor, playerBG));
-                }
-            }
         }
     }
 
@@ -217,7 +215,11 @@ public class Player implements Constants {
                 }
                 map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
-                if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
+                for (Player p: players) {
+                    if (i == p.getPosX() && j == p.getPosY()) {
+                        p.setHit(true);
+                    }
+                }
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
 
             }
@@ -234,7 +236,11 @@ public class Player implements Constants {
                 }
                 map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
-                if (i == enemy.getPosX() && j == enemy.getPosY()) enemyHit = true;
+                for (Player p: players) {
+                    if (i == p.getPosX() && j == p.getPosY()) {
+                        p.setHit(true);
+                    }
+                }
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
             }
             if (hitWall) break;
@@ -250,7 +256,11 @@ public class Player implements Constants {
                 }
                 map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
-                if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
+                for (Player p: players) {
+                    if (i == p.getPosX() && j == p.getPosY()) {
+                        p.setHit(true);
+                    }
+                }
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
             }
             if (hitWall) break;
@@ -266,7 +276,11 @@ public class Player implements Constants {
                 }
                 map[i][j].setWalkable(true);
                 if (i == posX && j == posY) hit = true;
-                if (j == enemy.getPosY() && i == enemy.getPosX()) enemyHit = true;
+                for (Player p: players) {
+                    if (i == p.getPosX() && j == p.getPosY()) {
+                        p.setHit(true);
+                    }
+                }
                 screen.setCharacter(i, j, new TextCharacter('*', new TextColor.RGB(255, 0, 0), bg));
             }
             if (hitWall) break;
@@ -277,14 +291,10 @@ public class Player implements Constants {
             if (lives == 0) {
                 living = false;
                 suicided = true;
-                Bomberman.inGame = false;
             }
-        } else if (enemyHit) {
-            enemy.lives--;
-            if (enemy.lives == 0) {
-                enemy.living = false;
-                Bomberman.inGame = false;
-            }
+        }
+        for (Player p: players) {
+            p.checkHit();
         }
         bomb.setVisible(false);
         bomb.setStart(System.currentTimeMillis());
@@ -359,8 +369,26 @@ public class Player implements Constants {
 
         }
     }
+    private void checkHit() {
+        if (hit) {
+            lives--;
+            if (lives == 0) {
+                living = false;
+            }
+            hit = false;
+        }
+    }
 
     // region Getters/Setters
+
+    public int getMoveDelay() {
+        return moveDelay;
+    }
+
+    public void setMoveDelay(int moveDelay) {
+        this.moveDelay = moveDelay;
+    }
+
     private int getPosX() {
         return posX;
     }
@@ -395,14 +423,6 @@ public class Player implements Constants {
 
     public void setBombed(boolean bombed) {
         this.bombed = bombed;
-    }
-
-    public Player getEnemy() {
-        return enemy;
-    }
-
-    void setEnemy(Player enemy) {
-        this.enemy = enemy;
     }
 
     public int getvSpeed() {
@@ -445,14 +465,6 @@ public class Player implements Constants {
         this.powerLevelBomb = powerLevelBomb;
     }
 
-    int getPowerLevelSpeed() {
-        return powerLevelSpeed;
-    }
-
-    void setPowerLevelSpeed(int powerLevelSpeed) {
-        this.powerLevelSpeed = powerLevelSpeed;
-    }
-
     public boolean isSuicided() {
         return suicided;
     }
@@ -475,6 +487,14 @@ public class Player implements Constants {
 
     public void setPlayers(List<Player> players) {
         this.players = players;
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
     }
     //endregion
 }

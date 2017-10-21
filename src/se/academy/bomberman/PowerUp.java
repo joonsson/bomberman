@@ -53,7 +53,10 @@ public class PowerUp implements Constants {
             case SPEED:
                 Sound speed = new Sound("src/Sounds/gotta go fast.wav");
                 speed.start();
-                player.setPowerLevelSpeed(player.getPowerLevelSpeed()+1);
+                if (player.getMoveDelay() < 0) {
+                    player.setMoveDelay(player.getMoveDelay() - 100);
+                }
+                speed.mediaPlayer.setVolume(1);
                 speed.mediaPlayer.play();
                 break;
 

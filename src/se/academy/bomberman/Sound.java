@@ -21,6 +21,7 @@ public class Sound extends Thread {
     }
     @Override
     public void run() {
+        mediaPlayer.setVolume(0.5);
         if (loop) {
             mediaPlayer.setOnEndOfMedia(new Runnable() {
                 @Override

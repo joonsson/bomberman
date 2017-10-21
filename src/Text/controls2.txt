@@ -1,0 +1,13 @@
+P2 controls:
+UP:    I
+DOWN:  K
+LEFT:  J
+RIGHT: L
+BOMB:  N
+
+P4 controls:
+UP:    8
+DOWN:  5
+LEFT:  4
+RIGHT: 6
+BOMB:  1
